@@ -55,6 +55,14 @@ db.getCollectionNames() #list collections
 db.klerosDocument.find({}) # list documents
 ```
 
+### Set environment variables
+
+Create `.env` file in the root directory with these keys:
+```
+SECRET={secure secret e.g. dontusethisasyoursecret}
+DB_URI={uri of mongo instance e.g. mongodb://localhost/kleros}
+```
+
 ### Allow your ip
 
 Add your `ip` in the file `config.js :ipsAllowed`

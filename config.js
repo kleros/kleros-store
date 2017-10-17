@@ -1,6 +1,6 @@
 module.exports = {
-  secret: 'nosecret', // TODO use process var
-  database: 'mongodb://localhost/kleros',  // TODO use process var
+  secret: process.env.SECRET ? process.env.SECRET : 'nosecret',
+  database: process.env.DB_URI ? process.env.DB_URI : 'mongodb://localhost/kleros',
   ipsAllowed: [
     '::1',
     '127.0.0.1',
