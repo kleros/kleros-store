@@ -1,19 +1,19 @@
 const _ = require('lodash')
-
+const Web3 = require('web3')
+const sha3 = new Web3().sha3
 const KlerosDocument = require('../models/KlerosDocument'),
       constants = require('../constants')
-
 
 exports.addDocument = (req, res) => {
   let newKlerosDocument = new KlerosDocument()
 
-  newKlerosDocument.hash = req.params.kleros_document
-  newKlerosDocument.kleros_document = req.params.kleros_document
+  newKlerosDocument.hash = sha3(req.body.document)
+  newKlerosDocument.kleros_document = req.body.document
 
   newKlerosDocument.save((err, klerosDocument) => {
     if (err)
       res.send(err)
-    if (!error)
+    if (!err)
       res.json(klerosDocument)
   })
 }

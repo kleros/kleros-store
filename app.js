@@ -13,6 +13,9 @@ const express = require('express'),
 const index = require('./routes/index'),
       kleros = require('./routes/kleros')
 
+// load enviornment variables
+require('dotenv').config();
+
 const config = require('./config')
 
 mongoose.Promise = require('bluebird')
@@ -30,7 +33,7 @@ app.use(function(req, res, next) {
 });
 
 // Create the server
-// app.use(ipfilter(config.ipsAllowed, {mode: 'allow'}))
+app.use(ipfilter(config.ipsAllowed, {mode: 'allow'}))
 
 // create a write stream (in append mode)
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {flags: 'a'})
@@ -38,7 +41,7 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'),
 // log req and res
 app.use(morgan('combined', {stream: accessLogStream}))
 
-//app.set('secret', config.secret)
+app.set('secret', config.secret)
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
