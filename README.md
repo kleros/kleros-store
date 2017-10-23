@@ -137,24 +137,16 @@ Set database in `config.js`.
 sudo apt-get install bc
 
 # Clone the Let’s Encrypt repository to your server
-sudo git clone https://github.com/letsencrypt/letsencrypt /opt/letsencrypt # or sudo apt-get install letsencrypt
+sudo apt-get install letsencrypt
 
-/opt/letsencrypt/certbot-auto renew
+sudo letsencrypt certonly
 
 dig +short kleros-store.com
 # output should be your droplet’s IP address, e.g. 138.68.11.65
 
-# Move into the Let’s Encrypt directory
-cd /opt/letsencrypt
+# Update the SSL certificate
+sudo letsencrypt certonly --standalone -d
 
-# Create the SSL certificate
-./certbot-auto certonly --standalone
-
-/opt/letsencrypt/certbot-auto renew
-
-sudo crontab -e
-
-00 1 * * 1 /opt/letsencrypt/certbot-auto renew >> /var/log/letsencrypt-renewal.log
 ```
 
 ## Api documentation
