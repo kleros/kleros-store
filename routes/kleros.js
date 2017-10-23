@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const DocumentHandlers = require('../controllers/documentController')
+const DocumentHandlers = require('../controllers/DocumentController')
 
 /**
  * @api {get} kleros/:hash Get document by hash
@@ -16,9 +16,13 @@ const DocumentHandlers = require('../controllers/documentController')
  * @apiParam (Login) {String} token Only logged users users can get this.
  *
  * @apiSuccessExample {json} Success
- *    HTTP/1.1 200 OK
- *    { TODO
- *    }
+ *   HTTP/1.1 200 OK
+ *   {
+ *     "_id": "59aca9607879b17103bb1b43",
+ *     "document": "data",
+ *     "__v": 0,
+ *     "created_at": "2017-09-04T01:16:16.726Z"
+ *   }
  * @apiErrorExample {json} List error
  *    HTTP/1.1 500 Internal Server Error
  */
