@@ -5,7 +5,7 @@ const Profile = require('../models/Profile'),
 exports.updateProfile = async (req, res) => {
   const address = req.params.address
 
-  const ProfileInstance = new Profile(req.body)
+  const ProfileInstance = new Profile(Object.assign({}, req.body, {address: address}))
 
   ProfileInstance.save((err, Profile) => {
     if (err) {
