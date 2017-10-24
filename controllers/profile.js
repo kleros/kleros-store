@@ -1,6 +1,4 @@
 const _ = require('lodash')
-const Web3 = require('web3')
-const sha3 = new Web3().sha3
 const Profile = require('../models/Profile'),
       constants = require('../constants')
 

@@ -16,15 +16,12 @@
     "dotenv": "^4.0.0",
     "express": "~4.15.2",
     "express-ipfilter": "^0.3.1",
-    "fs": "^0.0.1-security",
     "global": "^4.3.2",
     "https": "^1.0.0",
     "jade": "~1.11.0",
     "mongoose": "^4.11.9",
     "morgan": "^1.8.2",
-    "serve-favicon": "~2.4.2",
-    "xml2js": "^0.4.19",
-    "web3": "^0.20.1"
+    "serve-favicon": "^2.4.5"
   },
   "apidoc": {
     "title": "Kleros store",
