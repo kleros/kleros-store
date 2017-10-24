@@ -10,11 +10,10 @@ const express = require('express'),
     mongoose = require('mongoose'),
     ipfilter = require('express-ipfilter').IpFilter
 
-const index = require('./routes/index'),
-      kleros = require('./routes/kleros')
+const index = require('./routes/index')
 
 // load enviornment variables
-require('dotenv').config();
+require('dotenv').config()
 
 const config = require('./config')
 
@@ -33,7 +32,7 @@ app.use(function(req, res, next) {
 });
 
 // Create the server
-app.use(ipfilter(config.ipsAllowed, {mode: 'allow'}))
+//app.use(ipfilter(config.ipsAllowed, {mode: 'allow'}))
 
 // create a write stream (in append mode)
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {flags: 'a'})
@@ -58,7 +57,6 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 // public routes
 app.use('/', index)
-app.use('/kleros', kleros)
 
 app.use('/apidoc', express.static('apidoc'));
 

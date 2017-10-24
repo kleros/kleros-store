@@ -8,7 +8,7 @@
       * [Set mongo network](#set-mongo-network)
       * [Run mongo in local](#run-mongo-in-local)
   * [Allow your ip](#allow-your-ip)
-  * [Add document](#add-document)
+  * [Add profile](#add-profile)
 * [Deployment](#deployment)
   * [Redeployment](#redeployment)
 * [Set https](#set-https)
@@ -52,7 +52,7 @@ db.getMongo().getDBNames() # list db
 # if `kleros` not exists
 use kleros # create `kleros` database
 db.getCollectionNames() #list collections
-db.klerosDocument.find({}) # list documents
+db.profiles.find({}) # list profiles
 ```
 
 ### Set environment variables
@@ -67,7 +67,7 @@ DB_URI={uri of mongo instance e.g. mongodb://localhost/kleros}
 
 Add your `ip` in the file `config.js :ipsAllowed`
 
-### Add an document
+### Add an profile
 
 To add an user you can use the software `compass` and add an entry in the
 `kleros` collection.
