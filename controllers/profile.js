@@ -36,15 +36,6 @@ exports.updateContractProfile = async (req, res) => {
   if (_.isNull(ProfileInstance))
     return res.status(400).send({message: 'Profile not found'})
 
-  const secondAddress = (bodyContract.partyA === address)
-    ? bodyContract.partyB
-    : bodyContract.partyA
-
-
-  let SecondProfileInstance = await getProfileDb(secondAddress)
-  if (_.isNull(SecondProfileInstance))
-    return res.status(400).send({message: 'Second profile not found'})
-
   // remove the older contract
   let contracts = ProfileInstance.contracts.filter(contract => {
       return contract.address !== contractAddress
@@ -55,9 +46,25 @@ exports.updateContractProfile = async (req, res) => {
 
   // update the contract in the profile
   ProfileInstance.contracts = contracts
-  SecondProfileInstance.contracts = contracts
 
   const updateProfile = await updateProfileDb(ProfileInstance)
+
+  const secondAddress = (bodyContract.partyA === address)
+    ? bodyContract.partyB
+    : bodyContract.partyA
+
+  let SecondProfileInstance = await getProfileDb(secondAddress)
+
+  // if the second profile not exists still, we create it
+  if (_.isNull(SecondProfileInstance)) {
+    SecondProfileInstance = new Profile(
+      {
+        address: secondAddress
+      }
+    )
+  }
+
+  SecondProfileInstance.contracts = contracts
 
   const [NewProfile, NewSecondProfile] = await Promise.all([
     updateProfileDb(ProfileInstance),
