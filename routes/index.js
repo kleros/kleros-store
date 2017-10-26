@@ -70,11 +70,12 @@ router.get('/:address', ProfileHandlers.getProfileByAddress)
 router.post('/:address', ProfileHandlers.updateProfile)
 
 /**
- * @api {post} kleros Add/Update a profile
+ * @api {post} kleros Add/Update a contract
  *
  * @apiGroup Profile
  *
- * @apiParam {String} address Ethereum of the user
+ * @apiParam {String} address Ethereum address of the user
+ * @apiParam {String} address Ethereum address of the contract
  *
  *
  * @apiSuccessExample {json} Success
@@ -87,6 +88,6 @@ router.post('/:address', ProfileHandlers.updateProfile)
  *     "created_at": "2017-09-04T01:16:16.726Z"
  *   }
  */
-router.post('/:address/contracts/:hash', ProfileHandlers.updateContractProfile)
+router.post('/:address/contracts/:contractAddress', ProfileHandlers.updateContractProfile)
 
 module.exports = router

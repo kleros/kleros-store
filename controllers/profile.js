@@ -25,8 +25,11 @@ exports.updateProfile = async (req, res) => {
 
 exports.updateContractProfile = async (req, res) => {
   const address = req.params.address
-  const hash = req.params.hash
+  const contractAddress = req.params.contractAddress
   const bodyContract = req.body
+
+  // force the correct address
+  bodyContract.address = req.params.contractAddress
 
   let ProfileInstance = await getProfileDb(address)
 
@@ -44,7 +47,7 @@ exports.updateContractProfile = async (req, res) => {
 
   // remove the older contract
   let contracts = ProfileInstance.contracts.filter(contract => {
-      return contract.hash !== hash
+      return contract.address !== contractAddress
   })
 
   // add the new contract
@@ -102,6 +105,7 @@ exports.addFakeProfile = (req, res) => {
     address: '0xAcB2db3E3fA7a6cba5dFE964408099d860246D7Z',
     contracts: [
       {
+        address: '0x6f9410a8c4d037bb2c82174c7c9fd9266d34563e',
         hash : 'l88df39fd7fe94897c2ff7ea9eb98590ed7ecc11a6e499b64a75bb5136311712',
         partyA : '0xAcB2db3E3fA7a6cba5dFE964408099d860246D7Z',
         partyB : '0xBcB2db3E3fA7a6cba5dFE964408099d860246D7Z',
