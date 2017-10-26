@@ -16,21 +16,35 @@ const ProfileSchema = new Schema({
     description: String,
     evidencePartyA: [{
       hash: String,
+      title: String,
+      description: String,
       documentContent: String
     }],
     evidencePartyB: [{
       hash: String,
+      title: String,
+      description: String,
       documentContent: String
     }],
   }],
   disputes : [{
     id: String,
+    disputeId: Number,
     hash : String,
     contractAddress: String,
     partyA : String,
     partyB : String,
+    title : String,
+    deadline : String,
+    status : String,
+    fee: Number,
     information : String,
-    jsutification : String
+    justification : String,
+    resolutionOptions: [{
+      name: String,
+      description: String,
+      value: Number
+    }]
   }],
   created_at: {
     type: Date,

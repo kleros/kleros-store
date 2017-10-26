@@ -1,6 +1,8 @@
 const _ = require('lodash')
 const Profile = require('../models/Profile'),
-      constants = require('../constants')
+      constants = require('../constants'),
+      getFakeData = require('./fake-data')
+
 
 exports.updateProfile = async (req, res) => {
   const address = req.params.address
@@ -107,66 +109,32 @@ exports.getProfileByAddress = async (req, res) => {
   }
 }
 
-exports.addFakeProfile = (req, res) => {
-  const ProfileInstance = new Profile({
-    address: '0xAcB2db3E3fA7a6cba5dFE964408099d860246D7Z',
-    contracts: [
-      {
-        address: '0x6f9410a8c4d037bb2c82174c7c9fd9266d34563e',
-        hash : 'l88df39fd7fe94897c2ff7ea9eb98590ed7ecc11a6e499b64a75bb5136311712',
-        partyA : '0xAcB2db3E3fA7a6cba5dFE964408099d860246D7Z',
-        partyB : '0xBcB2db3E3fA7a6cba5dFE964408099d860246D7Z',
-        email: 'open@bazar.fr',
-        description: 'description',
-        evidencePartyA: [
-          {
-            hash: 'b88df39fd7fe94897c2ff7ea9eb98590ed7ecc11a6e499b64a75bb5136311712',
-            documentContent: 'myEvidence'
-          },
-          {
-            hash: 'w88df39fd7fe94897c2ff7ea9eb98590ed7ecc11a6e499b64a75bb5136311712',
-            documentContent: 'myEvidence'
-          }
-        ],
-        evidencePartyB: [
-          {
-            hash: 'fx8df39fd7fe94897c2ff7ea9eb98590ed7ecc11a6e499b64a75bb5136311712',
-            documentContent: 'myEvidence'
-          },
-          {
-            hash: 'a88df39fd7fe94897c2ff7ea9eb98590ed7ecc11a6e499b64a75bb5136311712',
-            documentContent: 'myEvidence'
-          }
-        ],
-      },
-    ],
-    disputes: [
-      {
-        hash : 'f88df39fd7fe94897c2ff7ea9eb98590ed7ecc11a6e499b64a75bb5136311712',
-        partyA: '0xDcB2db3E3fA7a6cba5dFE964408099d860246D7Z',
-        partyB: '0xDcB2db3E3fA7a6cba5dFE964408099d860246D7Z',
-        contractAddress : '0xDcB2db3E3fA7a6cba5dFE964408099d860246D7Z',
-        justification: 'justification'
-      },
-      {
-        hash : 'as8df39fd7fe94897c2ff7ea9eb98590ed7ecc11a6e499b64a75bb5136311712',
-        partyA: '0xDcB2db3E3fA7a6cba5dFE964408099d860246D7Z',
-        partyB: '0xDcB2db3E3fA7a6cba5dFE964408099d860246D7Z',
-        contractAddress : '0xDcB2db3E3fA7a6cba5dFE964408099d860246D7Z',
-        justification: 'justification'
-      },
-    ]
-  })
+exports.addFakeProfiles = async (req, res) => {
+  const profileInstances = [],
+        profilePromises = []
 
-  ProfileInstance.save((err, Profile) => {
-    if (err) {
-      return res.status(400).send({
-        message: err,
-      })
-    } else {
-      return res.json(Profile)
-    }
-  })
+  // create user profiles for two parties in disputes and a user profile for :account as a juror
+  profiles = getFakeData(req.params.address)
+
+  for (let i=0; i<profiles.length; i++) {
+    profilePromises.push(
+      new Promise((resolve, reject) => {
+        const ProfileInstance = new Profile(profiles[i])
+        ProfileInstance.save((err, Profile) => {
+          if (err) {
+            reject()
+          } else {
+            profileInstances.push(Profile)
+            resolve()
+          }
+        })
+      }
+    ))
+  }
+
+  await Promise.all(profilePromises)
+
+  return res.json(profileInstances)
 }
 
 const getProfileDb = address => {
