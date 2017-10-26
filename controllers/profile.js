@@ -5,7 +5,77 @@ const Profile = require('../models/Profile'),
 exports.updateProfile = async (req, res) => {
   const address = req.params.address
 
-  const ProfileInstance = new Profile(Object.assign({}, req.body, {address: address}))
+  const newProfileInstance = new Profile(
+    {
+      address: address,
+      ...req.body
+    }
+  )
+
+  newProfileInstance.save((err, Profile) => {
+    if (err) {
+      return res.status(400).send({
+        message: err,
+      })
+    } else {
+      return res.json(Profile)
+    }
+  })
+}
+
+exports.updateContractProfile = async (req, res) => {
+  const address = req.params.address
+  const hash = req.params.hash
+  const bodyContract = req.body
+
+  let ProfileInstance = await getProfileDb(address)
+
+  if (_.isNull(ProfileInstance))
+    return res.status(400).send({message: 'Profile not found'})
+
+  const secondAddress = (bodyContract.partyA === address)
+    ? bodyContract.partyB
+    : bodyContract.partyA
+
+
+  let SecondProfileInstance = await getProfileDb(secondAddress)
+  if (_.isNull(SecondProfileInstance))
+    return res.status(400).send({message: 'Second profile not found'})
+
+  // remove the older contract
+  let contracts = ProfileInstance.contracts.filter(contract => {
+      return contract.hash !== hash
+  })
+
+  // add the new contract
+  contracts.push(bodyContract)
+
+  // update the contract in the profile
+  ProfileInstance.contracts = contracts
+  SecondProfileInstance.contracts = contracts
+
+  const updateProfile = await updateProfileDb(ProfileInstance)
+
+  const [NewProfile, NewSecondProfile] = await Promise.all([
+    updateProfileDb(ProfileInstance),
+    updateProfileDb(SecondProfileInstance),
+  ])
+
+  if (typeof updateProfile !== Profile)
+    return res.status(400).send(updateProfile)
+
+  return res.json([
+    NewProfile,
+    NewSecondProfile
+  ])
+}
+
+exports.updateDisputesProfile = async (req, res) => {
+  const address = req.params.address
+
+  const profileInstance = await getProfileDb(address)
+
+  const newProfileInstance = new Profile(Object.assign({}, {address: address}, req.body))
 
   ProfileInstance.save((err, Profile) => {
     if (err) {
@@ -20,7 +90,7 @@ exports.updateProfile = async (req, res) => {
 
 exports.getProfileByAddress = async (req, res) => {
   try {
-    let ProfileInstance = await getProfileDb(req.params.address)
+    const ProfileInstance = await getProfileDb(req.params.address)
     res.json(ProfileInstance)
   } catch (e) {
     res.send(e)
@@ -29,25 +99,50 @@ exports.getProfileByAddress = async (req, res) => {
 
 exports.addFakeProfile = (req, res) => {
   const ProfileInstance = new Profile({
-    address: '0xDcB2db3E3fA7a6cba5dFE964408099d860246D7Z',
+    address: '0xAcB2db3E3fA7a6cba5dFE964408099d860246D7Z',
     contracts: [
       {
-        hash : 'f88df39fd7fe94897c2ff7ea9eb98590ed7ecc11a6e499b64a75bb5136311712',
-        contentDocument : 'kleros'
-      },
-      {
-        hash : 'af2caa1c2ca1d027f1ac823b529d0a67cd144264b2789fa2ea4d63a67c7103cc',
-        contentDocument : 'vitalik'
+        hash : 'l88df39fd7fe94897c2ff7ea9eb98590ed7ecc11a6e499b64a75bb5136311712',
+        partyA : '0xAcB2db3E3fA7a6cba5dFE964408099d860246D7Z',
+        partyB : '0xBcB2db3E3fA7a6cba5dFE964408099d860246D7Z',
+        email: 'open@bazar.fr',
+        description: 'description',
+        evidencePartyA: [
+          {
+            hash: 'b88df39fd7fe94897c2ff7ea9eb98590ed7ecc11a6e499b64a75bb5136311712',
+            documentContent: 'myEvidence'
+          },
+          {
+            hash: 'w88df39fd7fe94897c2ff7ea9eb98590ed7ecc11a6e499b64a75bb5136311712',
+            documentContent: 'myEvidence'
+          }
+        ],
+        evidencePartyB: [
+          {
+            hash: 'fx8df39fd7fe94897c2ff7ea9eb98590ed7ecc11a6e499b64a75bb5136311712',
+            documentContent: 'myEvidence'
+          },
+          {
+            hash: 'a88df39fd7fe94897c2ff7ea9eb98590ed7ecc11a6e499b64a75bb5136311712',
+            documentContent: 'myEvidence'
+          }
+        ],
       },
     ],
     disputes: [
       {
         hash : 'f88df39fd7fe94897c2ff7ea9eb98590ed7ecc11a6e499b64a75bb5136311712',
-        contentDocument : 'kleros'
+        partyA: '0xDcB2db3E3fA7a6cba5dFE964408099d860246D7Z',
+        partyB: '0xDcB2db3E3fA7a6cba5dFE964408099d860246D7Z',
+        contractAddress : '0xDcB2db3E3fA7a6cba5dFE964408099d860246D7Z',
+        justification: 'justification'
       },
       {
-        hash : '541111248b45b7a8dc3f5579f630e74cb01456ea6ac067d3f4d793245a255155',
-        contentDocument : 'ethereum'
+        hash : 'as8df39fd7fe94897c2ff7ea9eb98590ed7ecc11a6e499b64a75bb5136311712',
+        partyA: '0xDcB2db3E3fA7a6cba5dFE964408099d860246D7Z',
+        partyB: '0xDcB2db3E3fA7a6cba5dFE964408099d860246D7Z',
+        contractAddress : '0xDcB2db3E3fA7a6cba5dFE964408099d860246D7Z',
+        justification: 'justification'
       },
     ]
   })
@@ -75,5 +170,17 @@ const getProfileDb = address => {
           resolve(Profile)
         }
       )
+  })
+}
+
+const updateProfileDb = Profile => {
+  return new Promise((resolve, reject) => {
+    Profile.save((err, newProfile) => {
+      if (err)
+        reject({
+          message: err,
+        })
+      resolve(newProfile)
+    })
   })
 }

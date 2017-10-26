@@ -69,4 +69,24 @@ router.get('/:address', ProfileHandlers.getProfileByAddress)
  */
 router.post('/:address', ProfileHandlers.updateProfile)
 
+/**
+ * @api {post} kleros Add/Update a profile
+ *
+ * @apiGroup Profile
+ *
+ * @apiParam {String} address Ethereum of the user
+ *
+ *
+ * @apiSuccessExample {json} Success
+ *   HTTP/1.1 200 OK
+ *   {
+ *     "_id": "59aca9607879b17103bb1b43",
+ *     "contracts": [],
+ *     "disputes": [],
+ *     "__v": 0,
+ *     "created_at": "2017-09-04T01:16:16.726Z"
+ *   }
+ */
+router.post('/:address/contracts/:hash', ProfileHandlers.updateContractProfile)
+
 module.exports = router
