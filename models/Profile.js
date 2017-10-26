@@ -10,6 +10,8 @@ const ProfileSchema = new Schema({
     hash : String,
     partyA : String,
     partyB : String,
+    arbitrator: String,
+    timeout: Number,
     email: String,
     description: String,
     evidencePartyA: [{
