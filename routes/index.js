@@ -12,6 +12,8 @@ router.get('/', function(req, res, next) {
  *
  * @apiGroup Profile
  *
+ * @apiParam {String} address Ethereum of the juror
+ *
  * @apiSuccessExample {json} Success
  *   HTTP/1.1 200 OK
  *   {
@@ -22,7 +24,7 @@ router.get('/', function(req, res, next) {
  *     "created_at": "2017-09-04T01:16:16.726Z"
  *   }
  */
-router.post('/fake-data', ProfileHandlers.addFakeProfile)
+router.post('/fake-data/:address', ProfileHandlers.addFakeProfiles)
 
 /**
  * @api {get} kleros/:address Get profile by address
