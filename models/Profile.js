@@ -6,6 +6,7 @@ const ProfileSchema = new Schema({
     type: String
   },
   contracts : [{
+    address: String,
     hash : String,
     partyA : String,
     partyB : String,
@@ -21,6 +22,7 @@ const ProfileSchema = new Schema({
     }],
   }],
   disputes : [{
+    id: String,
     hash : String,
     contractAddress: String,
     partyA : String,
