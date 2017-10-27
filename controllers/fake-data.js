@@ -9,6 +9,7 @@ module.exports = (jurorAddress) => {
     [
       {
         address: jurorAddress,
+        balance: 0,
         contracts: [],
         disputes: [
           {
