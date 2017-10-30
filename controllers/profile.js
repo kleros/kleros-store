@@ -35,8 +35,15 @@ exports.updateContractProfile = async (req, res) => {
 
   let ProfileInstance = await getProfileDb(address)
 
-  if (_.isNull(ProfileInstance))
-    return res.status(400).send({message: 'Profile not found'})
+  console.log('ProfileInstance', ProfileInstance)
+
+  if (_.isNull(ProfileInstance)) {
+    ProfileInstance = new Profile(
+      {
+        address: address
+      }
+    )
+  }
 
   // remove the older contract
   let contracts = ProfileInstance.contracts.filter(contract => {
