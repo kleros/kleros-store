@@ -35,8 +35,7 @@ exports.updateContractProfile = async (req, res) => {
 
   let ProfileInstance = await getProfileDb(address)
 
-  console.log('ProfileInstance', ProfileInstance)
-
+  // if not exists, we create this new user
   if (_.isNull(ProfileInstance)) {
     ProfileInstance = new Profile(
       {
@@ -79,9 +78,6 @@ exports.updateContractProfile = async (req, res) => {
     updateProfileDb(ProfileInstance),
     updateProfileDb(SecondProfileInstance),
   ])
-
-  if (typeof updateProfile !== Profile)
-    return res.status(400).send(updateProfile)
 
   return res.json([
     NewProfile,
