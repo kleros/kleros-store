@@ -90,6 +90,9 @@ router.post('/:address', ProfileHandlers.updateProfile)
  *     "created_at": "2017-09-04T01:16:16.726Z"
  *   }
  */
-router.post('/:address/contracts/:contractAddress', ProfileHandlers.updateContractProfile)
+router.post(
+  '/:address/contracts/:contractAddress',
+  ProfileHandlers.updateContractProfile
+)
 
 module.exports = router

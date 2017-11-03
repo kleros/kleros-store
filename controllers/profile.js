@@ -52,10 +52,8 @@ exports.updateContractProfile = async (req, res) => {
   // add the new contract
   contracts.push(bodyContract)
 
-  // update the contract in the profile
+  // update the contract in the profile (x-www-form-urlencoded)
   ProfileInstance.contracts = contracts
-
-  const updateProfile = await updateProfileDb(ProfileInstance)
 
   const secondAddress = (bodyContract.partyA === address)
     ? bodyContract.partyB
