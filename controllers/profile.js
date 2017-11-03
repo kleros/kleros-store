@@ -45,6 +45,7 @@ exports.updateContractProfile = async (req, res) => {
   }
 
   // remove the older contract
+  // FIXME keep partyA and partyB contents
   let contracts = ProfileInstance.contracts.filter(contract => {
       return contract.address !== contractAddress
   })
