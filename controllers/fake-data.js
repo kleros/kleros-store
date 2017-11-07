@@ -22,6 +22,8 @@ module.exports = (jurorAddress) => {
             contractAddress: contract1Address,
             justification: 'justification',
             fee: 40000000000,
+            disputeId: 1,
+            votes: [1,3],
             resolutionOptions: [
               {
                 name: 'Reimburse Party A',

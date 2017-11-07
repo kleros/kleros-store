@@ -32,6 +32,7 @@ const ProfileSchema = new Schema({
   disputes : [{
     id: String,
     disputeId: Number,
+    votes: [Number],
     hash : String,
     contractAddress: String,
     partyA : String,
