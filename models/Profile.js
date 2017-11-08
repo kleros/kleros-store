@@ -5,6 +5,7 @@ const ProfileSchema = new Schema({
   address: {
     type: String
   },
+  session: Number,
   balance: Number, // for demo store balance here
   contracts : [{
     address: String,
