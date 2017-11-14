@@ -24,6 +24,7 @@ module.exports = (jurorAddress) => {
             fee: 40000000000,
             disputeId: 1,
             votes: [1,3],
+            hasRuled: false,
             resolutionOptions: [
               {
                 name: 'Reimburse Party A',
