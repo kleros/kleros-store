@@ -72,6 +72,30 @@ router.get('/:address', ProfileHandlers.getProfileByAddress)
 router.post('/:address', ProfileHandlers.updateProfile)
 
 /**
+ * @api {post} kleros Add an evidence in the contract
+ *
+ * @apiGroup Profile
+ *
+ * @apiParam {String} address Ethereum address of the user
+ * @apiParam {String} address Ethereum address of the contract
+ *
+ *
+ * @apiSuccessExample {json} Success
+ *   HTTP/1.1 200 OK
+ *   {
+ *     "_id": "59aca9607879b17103bb1b43",
+ *     "contracts": [],
+ *     "disputes": [],
+ *     "__v": 0,
+ *     "created_at": "2017-09-04T01:16:16.726Z"
+ *   }
+ */
+router.post(
+  '/:address/contracts/:contractAddress/evidence',
+  ProfileHandlers.addEvidenceContractProfile
+)
+
+/**
  * @api {post} kleros Add/Update a contract
  *
  * @apiGroup Profile

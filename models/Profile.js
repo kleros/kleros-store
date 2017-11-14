@@ -17,18 +17,9 @@ const ProfileSchema = new Schema({
     email: String,
     description: String,
     disputeId: Number,
-    evidencePartyA: [{
-      hash: String,
-      title: String,
-      description: String,
-      documentContent: String
-    }],
-    evidencePartyB: [{
-      hash: String,
-      title: String,
-      description: String,
-      documentContent: String
-    }],
+    evidences: [{
+      url: String
+    }]
   }],
   disputes : [{
     id: String,

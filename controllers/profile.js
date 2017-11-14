@@ -84,6 +84,32 @@ exports.updateContractProfile = async (req, res) => {
   ])
 }
 
+exports.addEvidenceContractProfile = async (req, res) => {
+  const address = req.params.address
+  const contractAddress = req.params.contractAddress
+  const bodyContract = req.body
+  const evidenceContract = req.body
+
+  // force the correct address
+  bodyContract.address = req.params.contractAddress
+
+  let ProfileInstance = await getProfileDb(address)
+
+  // if not exists, we create this new user
+  if (_.isNull(ProfileInstance))
+    throw new Error('Profile does not exist')
+
+  const indexContract = ProfileInstance.contracts.findIndex(
+    contract => contract.address == contractAddress
+  )
+
+  await ProfileInstance.contracts[indexContract].evidences.push(evidenceContract)
+
+  const NewProfile = await updateProfileDb(ProfileInstance)
+
+  return res.json(NewProfile)
+}
+
 exports.updateDisputesProfile = async (req, res) => {
   const address = req.params.address
 
