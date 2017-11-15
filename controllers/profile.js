@@ -1,5 +1,6 @@
 const _ = require('lodash')
 const Profile = require('../models/Profile'),
+      { getDisputeDb } = require('./dispute'),
       constants = require('../constants'),
       getFakeData = require('./fake-data')
 
@@ -163,6 +164,22 @@ exports.addFakeProfiles = async (req, res) => {
   await Promise.all(profilePromises)
 
   return res.json(profileInstances)
+}
+
+exports.getDisputesForUser = async (res, req) => {
+  const address = req.params.address
+
+  const profileInstance = await getProfileDb(address)
+
+  const disputes = []
+  for (let i=0; i<profileInstance.disputes.length; i++) {
+    const dispute = await getDisputeDb(profileInstance.disputes[i].hash)
+    disputes.push(
+      Object.assign({}, dispute, profileInstance.disputes[i])
+    )
+  }
+
+  return res.json(disputes)
 }
 
 const getProfileDb = address => {

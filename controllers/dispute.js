@@ -11,10 +11,10 @@ exports.updateDisputeProfile = async (req, res) => {
   return res.json(newDispute)
 }
 
-const getDisputeDb = address => {
+const getDisputeDb = hash => {
   return new Promise((resolve, reject) => {
     Dispute
-      .findOne({address})
+      .findOne({hash})
       .sort('-created_at')
       .exec(
         (err, Dispute) => {
@@ -25,6 +25,8 @@ const getDisputeDb = address => {
       )
   })
 }
+
+exports.getDisputeDb = getDisputeDb
 
 const updateDisputeDb = Dispute => {
   return new Promise((resolve, reject) => {

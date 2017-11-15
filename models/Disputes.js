@@ -5,7 +5,6 @@ const DisputesSchema = new Schema({
   hash: String,
   id: String,
   disputeId: Number,
-  votes: [Number],
   contractAddress: String,
   partyA : String,
   partyB : String,
@@ -16,6 +15,7 @@ const DisputesSchema = new Schema({
   information : String,
   justification : String,
   ruling: Number, // 0 means no decision
+  session: Number, // session that dispute was active
   resolutionOptions: [{
     name: String,
     description: String,
