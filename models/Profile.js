@@ -22,24 +22,10 @@ const ProfileSchema = new Schema({
     }]
   }],
   disputes : [{
-    id: String,
-    disputeId: Number,
-    votes: [Number],
-    hash : String,
-    contractAddress: String,
-    partyA : String,
-    partyB : String,
-    title : String,
-    deadline : String,
-    status : String,
-    fee: Number,
-    information : String,
-    justification : String,
-    resolutionOptions: [{
-      name: String,
-      description: String,
-      value: Number
-    }]
+    hash: String, // use to fetch dispute
+    isJuror: Boolean,
+    hasRuled: Boolean,
+    votes: [Number]
   }],
   created_at: {
     type: Date,

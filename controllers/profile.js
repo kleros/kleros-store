@@ -1,5 +1,6 @@
 const _ = require('lodash')
 const Profile = require('../models/Profile'),
+      { getDisputeDb } = require('./dispute'),
       constants = require('../constants'),
       getFakeData = require('./fake-data')
 
@@ -87,11 +88,10 @@ exports.updateContractProfile = async (req, res) => {
 exports.addEvidenceContractProfile = async (req, res) => {
   const address = req.params.address
   const contractAddress = req.params.contractAddress
-  const bodyContract = req.body
   const evidenceContract = req.body
 
   // force the correct address
-  bodyContract.address = req.params.contractAddress
+  evidenceContract.address = req.params.contractAddress
 
   let ProfileInstance = await getProfileDb(address)
 
@@ -100,7 +100,7 @@ exports.addEvidenceContractProfile = async (req, res) => {
     throw new Error('Profile does not exist')
 
   const indexContract = ProfileInstance.contracts.findIndex(
-    contract => contract.address == contractAddress
+    contract => contract.address === contractAddress
   )
 
   await ProfileInstance.contracts[indexContract].evidences.push(evidenceContract)
@@ -112,20 +112,25 @@ exports.addEvidenceContractProfile = async (req, res) => {
 
 exports.updateDisputesProfile = async (req, res) => {
   const address = req.params.address
+  const disputeHash = req.params.disputeHash
 
-  const profileInstance = await getProfileDb(address)
+  const ProfileInstance = await getProfileDb(address)
 
-  const newProfileInstance = new Profile(Object.assign({}, {address: address}, req.body))
+  const indexContract = ProfileInstance.disputes.findIndex(
+    dispute => dispute.hash === disputeHash
+  )
 
-  ProfileInstance.save((err, Profile) => {
-    if (err) {
-      return res.status(400).send({
-        message: err,
-      })
-    } else {
-      return res.json(Profile)
-    }
-  })
+  if (indexContract >= 0) {
+    ProfileInstance.disputes[indexContract] = req.body
+  } else {
+    ProfileInstance.disputes.push(
+      req.body
+    )
+  }
+
+  const NewProfile = await updateProfileDb(ProfileInstance)
+
+  return res.json(NewProfile)
 }
 
 exports.getProfileByAddress = async (req, res) => {

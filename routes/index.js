@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const ProfileHandlers = require('../controllers/profile')
+const DisputeHandlers = require('../controllers/dispute')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -117,6 +118,76 @@ router.post(
 router.post(
   '/:address/contracts/:contractAddress',
   ProfileHandlers.updateContractProfile
+)
+
+/**
+ * @api {post} kleros Add/Update a dispute
+ *
+ * @apiGroup Profile
+ *
+ * @apiParam {String} address Ethereum address of the user
+ * @apiParam {String} address Ethereum address of the dispute
+ *
+ *
+ * @apiSuccessExample {json} Success
+ *   HTTP/1.1 200 OK
+ *   {
+ *     "_id": "59aca9607879b17103bb1b43",
+ *     "contracts": [],
+ *     "disputes": [],
+ *     "__v": 0,
+ *     "created_at": "2017-09-04T01:16:16.726Z"
+ *   }
+ */
+router.post(
+  '/:address/disputes/:disputeHash',
+  ProfileHandlers.updateDisputesProfile
+)
+
+/**
+ * @api {post} kleros Add/Update a dispute
+ *
+ * @apiGroup Dispute
+ *
+ * @apiParam {String} unique hash of the dispute
+ *
+ *
+ * @apiSuccessExample {json} Success
+ *   HTTP/1.1 200 OK
+ *   {
+ *     "_id": "59aca9607879b17103bb1b43",
+ *     "contracts": [],
+ *     "disputes": [],
+ *     "__v": 0,
+ *     "created_at": "2017-09-04T01:16:16.726Z"
+ *   }
+ */
+router.post(
+  '/disputes/:disputeHash',
+  DisputeHandlers.updateDisputeProfile
+)
+
+/**
+ * @api {post} kleros fetch dispute by hash
+ *
+ * @apiGroup Profile
+ *
+ * @apiParam {String} unique hash of the dispute
+ *
+ *
+ * @apiSuccessExample {json} Success
+ *   HTTP/1.1 200 OK
+ *   {
+ *     "_id": "59aca9607879b17103bb1b43",
+ *     "contracts": [],
+ *     "disputes": [],
+ *     "__v": 0,
+ *     "created_at": "2017-09-04T01:16:16.726Z"
+ *   }
+ */
+router.get(
+  '/disputes/:disputeHash',
+  DisputeHandlers.getDisputeByHash
 )
 
 module.exports = router
