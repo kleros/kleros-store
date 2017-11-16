@@ -111,17 +111,14 @@ exports.addEvidenceContractProfile = async (req, res) => {
 }
 
 exports.updateDisputesProfile = async (req, res) => {
-  console.log("in the right place")
   const address = req.params.address
   const disputeHash = req.params.disputeHash
-  console.log(req.body)
 
   const ProfileInstance = await getProfileDb(address)
 
   const indexContract = ProfileInstance.disputes.findIndex(
     dispute => dispute.hash === disputeHash
   )
-  console.log(indexContract)
 
   if (indexContract >= 0) {
     ProfileInstance.disputes[indexContract] = req.body
@@ -130,8 +127,6 @@ exports.updateDisputesProfile = async (req, res) => {
       req.body
     )
   }
-
-  console.log(ProfileInstance.disputes)
 
   const NewProfile = await updateProfileDb(ProfileInstance)
 
