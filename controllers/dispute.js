@@ -11,6 +11,14 @@ exports.updateDisputeProfile = async (req, res) => {
   return res.json(newDispute)
 }
 
+exports.getDisputeByHash = async (req, res) => {
+  const disputeHash = req.params.disputeHash
+
+  const dispute = await getDisputeDb(disputeHash)
+  console.log(dispute)
+  return res.json(dispute)
+}
+
 const getDisputeDb = hash => {
   return new Promise((resolve, reject) => {
     Dispute

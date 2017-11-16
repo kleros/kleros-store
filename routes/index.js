@@ -123,6 +123,30 @@ router.post(
 /**
  * @api {post} kleros Add/Update a dispute
  *
+ * @apiGroup Profile
+ *
+ * @apiParam {String} address Ethereum address of the user
+ * @apiParam {String} address Ethereum address of the dispute
+ *
+ *
+ * @apiSuccessExample {json} Success
+ *   HTTP/1.1 200 OK
+ *   {
+ *     "_id": "59aca9607879b17103bb1b43",
+ *     "contracts": [],
+ *     "disputes": [],
+ *     "__v": 0,
+ *     "created_at": "2017-09-04T01:16:16.726Z"
+ *   }
+ */
+router.post(
+  '/:address/disputes/:disputeHash',
+  ProfileHandlers.updateDisputesProfile
+)
+
+/**
+ * @api {post} kleros Add/Update a dispute
+ *
  * @apiGroup Dispute
  *
  * @apiParam {String} unique hash of the dispute
@@ -144,11 +168,11 @@ router.post(
 )
 
 /**
- * @api {post} kleros fetch all disputes for user
+ * @api {post} kleros fetch dispute by hash
  *
  * @apiGroup Profile
  *
- * @apiParam {String} address Ethereum address of the user
+ * @apiParam {String} unique hash of the dispute
  *
  *
  * @apiSuccessExample {json} Success
@@ -162,8 +186,8 @@ router.post(
  *   }
  */
 router.get(
-  '/:address/disputes',
-  ProfileHandlers.getDisputesForUser
+  '/disputes/:disputeHash',
+  DisputeHandlers.getDisputeByHash
 )
 
 module.exports = router

@@ -20,7 +20,14 @@ const DisputesSchema = new Schema({
     name: String,
     description: String,
     value: Number
-  }]
+  }],
+  created_at: {
+    type: Date,
+    default: Date.now
+  }
+},
+{
+  versionKey: false
 })
 
 module.exports = mongoose.model('disputes', DisputesSchema)

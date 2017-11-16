@@ -88,11 +88,10 @@ exports.updateContractProfile = async (req, res) => {
 exports.addEvidenceContractProfile = async (req, res) => {
   const address = req.params.address
   const contractAddress = req.params.contractAddress
-  const bodyContract = req.body
   const evidenceContract = req.body
 
   // force the correct address
-  bodyContract.address = req.params.contractAddress
+  evidenceContract.address = req.params.contractAddress
 
   let ProfileInstance = await getProfileDb(address)
 
@@ -101,7 +100,7 @@ exports.addEvidenceContractProfile = async (req, res) => {
     throw new Error('Profile does not exist')
 
   const indexContract = ProfileInstance.contracts.findIndex(
-    contract => contract.address == contractAddress
+    contract => contract.address === contractAddress
   )
 
   await ProfileInstance.contracts[indexContract].evidences.push(evidenceContract)
@@ -112,21 +111,31 @@ exports.addEvidenceContractProfile = async (req, res) => {
 }
 
 exports.updateDisputesProfile = async (req, res) => {
+  console.log("in the right place")
   const address = req.params.address
+  const disputeHash = req.params.disputeHash
+  console.log(req.body)
 
-  const profileInstance = await getProfileDb(address)
+  const ProfileInstance = await getProfileDb(address)
 
-  const newProfileInstance = new Profile(Object.assign({}, {address: address}, req.body))
+  const indexContract = ProfileInstance.disputes.findIndex(
+    dispute => dispute.hash === disputeHash
+  )
+  console.log(indexContract)
 
-  ProfileInstance.save((err, Profile) => {
-    if (err) {
-      return res.status(400).send({
-        message: err,
-      })
-    } else {
-      return res.json(Profile)
-    }
-  })
+  if (indexContract >= 0) {
+    ProfileInstance.disputes[indexContract] = req.body
+  } else {
+    ProfileInstance.disputes.push(
+      req.body
+    )
+  }
+
+  console.log(ProfileInstance.disputes)
+
+  const NewProfile = await updateProfileDb(ProfileInstance)
+
+  return res.json(NewProfile)
 }
 
 exports.getProfileByAddress = async (req, res) => {
@@ -164,22 +173,6 @@ exports.addFakeProfiles = async (req, res) => {
   await Promise.all(profilePromises)
 
   return res.json(profileInstances)
-}
-
-exports.getDisputesForUser = async (res, req) => {
-  const address = req.params.address
-
-  const profileInstance = await getProfileDb(address)
-
-  const disputes = []
-  for (let i=0; i<profileInstance.disputes.length; i++) {
-    const dispute = await getDisputeDb(profileInstance.disputes[i].hash)
-    disputes.push(
-      Object.assign({}, dispute, profileInstance.disputes[i])
-    )
-  }
-
-  return res.json(disputes)
 }
 
 const getProfileDb = address => {

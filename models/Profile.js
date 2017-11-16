@@ -24,7 +24,7 @@ const ProfileSchema = new Schema({
   disputes : [{
     hash: String, // use to fetch dispute
     isJuror: Boolean,
-    hasVoted: Boolean,
+    hasRuled: Boolean,
     votes: [Number]
   }],
   created_at: {
