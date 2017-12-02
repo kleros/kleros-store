@@ -18,6 +18,8 @@ const ProfileSchema = new Schema({
     description: String,
     disputeId: Number,
     evidences: [{
+      name: String,
+      description: String,
       url: String
     }]
   }],

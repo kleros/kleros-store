@@ -91,7 +91,7 @@ exports.addEvidenceContractProfile = async (req, res) => {
   const evidenceContract = req.body
 
   // force the correct address
-  evidenceContract.address = req.params.contractAddress
+  evidenceContract.address = contractAddress
 
   let ProfileInstance = await getProfileDb(address)
 
