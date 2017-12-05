@@ -35,5 +35,9 @@
   },
   "devDependencies": {
     "standard": "^10.0.3"
+  },
+  "scripts": {
+    "start-pm2": "pm2 start bin/www --name kleros-store",
+    "restart-pm2": "pm2 restart all"
   }
 }
