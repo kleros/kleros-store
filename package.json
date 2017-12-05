@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start-pm2": "pm2 start bin/www --name kleros-store",
+    "restart-pm2": "pm2 restart all",
+    "test": "NODE_ENV=test SERVER_PORT=6788 jest --forceExit"
   },
   "dependencies": {
     "apidoc": "^0.17.6",
@@ -19,9 +21,11 @@
     "global": "^4.3.2",
     "https": "^1.0.0",
     "jade": "~1.11.0",
+    "jest": "^21.2.1",
     "mongoose": "^4.11.9",
     "morgan": "^1.8.2",
-    "serve-favicon": "^2.4.5"
+    "serve-favicon": "^2.4.5",
+    "supertest": "^3.0.0"
   },
   "apidoc": {
     "title": "Kleros store",
@@ -35,9 +39,5 @@
   },
   "devDependencies": {
     "standard": "^10.0.3"
-  },
-  "scripts": {
-    "start-pm2": "pm2 start bin/www --name kleros-store",
-    "restart-pm2": "pm2 restart all"
   }
 }

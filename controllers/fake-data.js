@@ -3,7 +3,7 @@ const partyB = '0xBcB2db3E3fA7a6cba5dFE964408099d860246D7Z'
 const contract1Address = '0xDcB2db3E3fA7a6cba5dFE964408099d860246D7Z'
 const contract2Address = '0xEcB2db3E3fA7a6cba5dFE964408099d860246D7Z'
 
-module.exports = (jurorAddress) => {
+module.exports = jurorAddress => {
   return (
     // juror account
     [
