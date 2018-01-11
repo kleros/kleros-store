@@ -5,6 +5,7 @@ const DisputesSchema = new Schema({
   hash: String,
   id: String,
   disputeId: Number,
+  arbitratorAddress: String,
   contractAddress: String,
   partyA : String,
   partyB : String,
@@ -29,5 +30,8 @@ const DisputesSchema = new Schema({
 {
   versionKey: false
 })
+
+// index disputes by aribtrator address and then disputeId
+DisputesSchema.index({arbitratorAddress: 1, disputeId: -1})
 
 module.exports = mongoose.model('disputes', DisputesSchema)

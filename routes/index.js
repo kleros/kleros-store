@@ -140,7 +140,7 @@ router.post(
  *   }
  */
 router.post(
-  '/:address/disputes/:disputeHash',
+  '/:address/disputes/:arbitratorAddress/:disputeId',
   ProfileHandlers.updateDisputesProfile
 )
 
@@ -163,12 +163,12 @@ router.post(
  *   }
  */
 router.post(
-  '/disputes/:disputeHash',
+  '/disputes/:arbitratorAddress/:disputeId',
   DisputeHandlers.updateDisputeProfile
 )
 
 /**
- * @api {post} kleros fetch dispute by hash
+ * @api {get} kleros fetch dispute by arbitrator address and disputeId
  *
  * @apiGroup Profile
  *
@@ -186,8 +186,8 @@ router.post(
  *   }
  */
 router.get(
-  '/disputes/:disputeHash',
-  DisputeHandlers.getDisputeByHash
+  '/disputes/:arbitratorAddress/:disputeId',
+  DisputeHandlers.getDispute
 )
 
 module.exports = router

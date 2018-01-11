@@ -112,12 +112,13 @@ exports.addEvidenceContractProfile = async (req, res) => {
 
 exports.updateDisputesProfile = async (req, res) => {
   const address = req.params.address
-  const disputeHash = req.params.disputeHash
+  const disputeId = req.params.disputeId
+  const arbitratorAddress = req.params.arbitratorAddress
 
   const ProfileInstance = await getProfileDb(address)
 
   const indexContract = ProfileInstance.disputes.findIndex(
-    dispute => dispute.hash === disputeHash
+    dispute => (dispute.disputeId === disputeId && dispute.arbitratorAddress === arbitratorAddress)
   )
 
   if (indexContract >= 0) {
