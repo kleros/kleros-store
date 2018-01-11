@@ -3,7 +3,8 @@ const Dispute = require('../models/Disputes'),
       constants = require('../constants')
 
 exports.updateDisputeProfile = async (req, res) => {
-  const disputeHash = req.params.disputeHash
+  const disputeId = req.params.disputeId
+  const arbitratorAddress = req.params.arbitratorAddress
   const bodyContract = req.body
 
   // update db with body
@@ -11,17 +12,18 @@ exports.updateDisputeProfile = async (req, res) => {
   return res.json(newDispute)
 }
 
-exports.getDisputeByHash = async (req, res) => {
-  const disputeHash = req.params.disputeHash
+exports.getDispute = async (req, res) => {
+  const disputeId = req.params.disputeId
+  const arbitratorAddress = req.params.arbitratorAddress
 
-  const dispute = await getDisputeDb(disputeHash)
+  const dispute = await getDisputeDb(arbitratorAddress, disputeId)
   return res.json(dispute)
 }
 
-const getDisputeDb = hash => {
+const getDisputeDb = (arbitratorAddress, disputeId) => {
   return new Promise((resolve, reject) => {
     Dispute
-      .findOne({hash})
+      .findOne({arbitratorAddress, disputeId})
       .sort('-created_at')
       .exec(
         (err, Dispute) => {
