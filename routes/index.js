@@ -140,7 +140,7 @@ router.post(
  *   }
  */
 router.post(
-  '/:address/disputes/:arbitratorAddress/:disputeId',
+  '/:address/arbitrator/:arbitratorAddress/disputes/:disputeId',
   ProfileHandlers.updateDisputesProfile
 )
 
@@ -163,7 +163,7 @@ router.post(
  *   }
  */
 router.post(
-  '/disputes/:arbitratorAddress/:disputeId',
+  '/arbitrators/:arbitratorAddress/disputes/:disputeId',
   DisputeHandlers.updateDisputeProfile
 )
 
@@ -186,7 +186,7 @@ router.post(
  *   }
  */
 router.get(
-  '/disputes/:arbitratorAddress/:disputeId',
+  '/arbitrators/:arbitratorAddress/disputes/:disputeId',
   DisputeHandlers.getDispute
 )
 
