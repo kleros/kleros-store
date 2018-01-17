@@ -10,7 +10,7 @@ router.get('/', function(req, res, next) {
 })
 
 /**
- * @api {post} kleros Add a fake profile
+ * @api {post} fake-data/:address Add a fake profile
  *
  * @apiGroup Profile
  *
@@ -29,7 +29,7 @@ router.get('/', function(req, res, next) {
 router.post('/fake-data/:address', ProfileHandlers.addFakeProfiles)
 
 /**
- * @api {get} kleros/:address Get profile by address
+ * @api {get} :address Get profile by address
  *
  * @apiGroup Profile
  *
@@ -54,7 +54,7 @@ router.post('/fake-data/:address', ProfileHandlers.addFakeProfiles)
 router.get('/:address', ProfileHandlers.getProfileByAddress)
 
 /**
- * @api {post} kleros Add/Update a profile
+ * @api {post} :address Add/Update a profile
  *
  * @apiGroup Profile
  *
@@ -74,7 +74,7 @@ router.get('/:address', ProfileHandlers.getProfileByAddress)
 router.post('/:address', ProfileHandlers.updateProfile)
 
 /**
- * @api {post} kleros Add an evidence in the contract
+ * @api {post} :address/contracts/:contractAddress/evidence Add an evidence in the contract
  *
  * @apiGroup Profile
  *
@@ -98,7 +98,7 @@ router.post(
 )
 
 /**
- * @api {post} kleros Add/Update a contract
+ * @api {post} :address/contracts/:contractAddress Add/Update a contract
  *
  * @apiGroup Profile
  *
@@ -122,7 +122,7 @@ router.post(
 )
 
 /**
- * @api {post} kleros Add/Update a dispute
+ * @api {post} :address/arbitrator/:arbitratorAddress/disputes/:disputeId Add/Update a dispute
  *
  * @apiGroup Profile
  *
@@ -146,7 +146,7 @@ router.post(
 )
 
 /**
- * @api {post} kleros Add/Update a dispute
+ * @api {post} arbitrators/:arbitratorAddress/disputes/:disputeId Add/Update a dispute
  *
  * @apiGroup Dispute
  *
@@ -169,7 +169,7 @@ router.post(
 )
 
 /**
- * @api {get} kleros fetch dispute by arbitrator address and disputeId
+ * @api {get} arbitrators/:arbitratorAddress/disputes/:disputeId fetch dispute by arbitrator address and disputeId
  *
  * @apiGroup Profile
  *
@@ -192,7 +192,7 @@ router.get(
 )
 
 /**
- * @api {post} kleros Add/Update a arbitrator
+ * @api {post} arbitrators/:arbitratorAddress Add/Update a arbitrator
  *
  * @apiGroup Arbitrators
  *
@@ -215,7 +215,7 @@ router.post(
 )
 
 /**
- * @api {get} kleros fetch arbitrator with last block data
+ * @api {get} arbitrators/:arbitratorAddress fetch arbitrator with last block data
  *
  * @apiGroup Arbitrators
  *
