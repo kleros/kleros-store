@@ -155,7 +155,7 @@ sudo letsencrypt certonly --standalone -d
 
 ```
 yarn add global apidoc
-apidoc -f "controllers/.*\\.js$" -i ./  -o apidoc/ # bug with fish terminal (use bash)
+apidoc -f "routes/.*\\.js$" -i ./  -o apidoc/ # bug with fish terminal (use bash)
 ```
 
 ### Go to api documentation
