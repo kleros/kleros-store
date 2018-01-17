@@ -155,7 +155,7 @@ sudo letsencrypt certonly --standalone -d
 
 ```
 yarn add global apidoc
-apidoc -f "routes/.*\\.js$" -i ./  -o apidoc/ # bug with fish terminal (use bash)
+apidoc -f "routes/.*\\.js$" -i ./  -o public/apidoc/ # bug with fish terminal (use bash)
 ```
 
 ### Go to api documentation
@@ -167,6 +167,6 @@ open http://localhost:3000/apidoc/
 ### Regenerate api documentation
 
 ```
-rm -rf apidoc
-apidoc -f "routes/.*\\.js$" -i ./  -o apidoc/ # bug with fish terminal (use bash)
+rm -rf public/apidoc
+apidoc -f "routes/.*\\.js$" -i ./  -o public/apidoc/ # bug with fish terminal (use bash)
 ```
