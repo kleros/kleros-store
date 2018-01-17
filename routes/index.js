@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const ProfileHandlers = require('../controllers/profile')
 const DisputeHandlers = require('../controllers/dispute')
+const ArbitratorsHandlers = require('../controllers/arbitrators')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -188,6 +189,52 @@ router.post(
 router.get(
   '/arbitrators/:arbitratorAddress/disputes/:disputeId',
   DisputeHandlers.getDispute
+)
+
+/**
+ * @api {post} kleros Add/Update a arbitrator
+ *
+ * @apiGroup Arbitrators
+ *
+ * @apiParam {String} address of arbitrator
+ *
+ *
+ * @apiSuccessExample {json} Success
+ *   HTTP/1.1 200 OK
+ *   {
+ *     "_id": "59aca9607879b17103bb1b43",
+ *     "address": '0x133b5b851cc62de33a02c928f6ac112cd42d1d83',
+ *     "lastBlock": 5235,
+ *     "__v": 0,
+ *     "created_at": "2017-09-04T01:16:16.726Z"
+ *   }
+ */
+router.post(
+  '/arbitrators/:arbitratorAddress',
+  ArbitratorsHandlers.updateArbitrator
+)
+
+/**
+ * @api {get} kleros fetch arbitrator with last block data
+ *
+ * @apiGroup Arbitrators
+ *
+ * @apiParam {String} address of arbitrator contract
+ *
+ *
+ * @apiSuccessExample {json} Success
+ *   HTTP/1.1 200 OK
+ *   {
+ *     "_id": "59aca9607879b17103bb1b43",
+ *     "address": '0x133b5b851cc62de33a02c928f6ac112cd42d1d83',
+ *     "lastBlock": 5235,
+ *     "__v": 0,
+ *     "created_at": "2017-09-04T01:16:16.726Z"
+ *   }
+ */
+router.get(
+  '/arbitrators/:arbitratorAddress',
+  ArbitratorsHandlers.getArbitrator
 )
 
 module.exports = router
