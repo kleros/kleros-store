@@ -7,14 +7,16 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: mongo-express
+      - image: circleci/node:latest
+      - image: circleci/node:latest
+        command: [mongod, --smallfiles]
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # - image: circleci/mongo:3.4.4
 
-    working_directory: ~/repo
+    working_directory: ~/
 
     steps:
       - checkout
@@ -35,3 +37,6 @@ jobs:
 
       # run tests!
       - run: yarn test
+
+      # can access mongo on localhost
+      - run: sleep 5 && nc -vz localhost 27017
