@@ -2,3 +2,4 @@ node_modules
 access.log
 yarn-error.log
 .env
+public/apidoc/*
