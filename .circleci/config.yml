@@ -8,7 +8,7 @@ jobs:
     docker:
       # specify the version you desire here
       - image: circleci/node:latest
-      - image: circleci/node:latest
+      - image: circleci/mongo:latest
         command: [mongod, --smallfiles]
 
       # Specify service dependencies here if necessary
