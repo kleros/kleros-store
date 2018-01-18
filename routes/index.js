@@ -26,7 +26,10 @@ router.get('/', function(req, res, next) {
  *     "created_at": "2017-09-04T01:16:16.726Z"
  *   }
  */
-router.post('/fake-data/:address', ProfileHandlers.addFakeProfiles)
+router.post(
+  '/fake-data/:address',
+  ProfileHandlers.addFakeProfiles
+)
 
 /**
  * @api {get} :address Get profile by address
@@ -51,7 +54,10 @@ router.post('/fake-data/:address', ProfileHandlers.addFakeProfiles)
  * @apiErrorExample {json} List error
  *    HTTP/1.1 500 Internal Server Error
  */
-router.get('/:address', ProfileHandlers.getProfileByAddress)
+router.get(
+  '/:address',
+  ProfileHandlers.getProfileByAddress
+)
 
 /**
  * @api {post} :address Add/Update a profile
@@ -71,7 +77,10 @@ router.get('/:address', ProfileHandlers.getProfileByAddress)
  *     "created_at": "2017-09-04T01:16:16.726Z"
  *   }
  */
-router.post('/:address', ProfileHandlers.updateProfile)
+router.post(
+  '/:address',
+  ProfileHandlers.updateProfile
+)
 
 /**
  * @api {post} :address/contracts/:contractAddress/evidence Add an evidence in the contract
@@ -194,7 +203,7 @@ router.get(
 /**
  * @api {post} arbitrators/:arbitratorAddress Add/Update a arbitrator
  *
- * @apiGroup Arbitrators
+ * @apiGroup Arbitrator
  *
  * @apiParam {String} address of arbitrator
  *
@@ -217,7 +226,7 @@ router.post(
 /**
  * @api {get} arbitrators/:arbitratorAddress fetch arbitrator with last block data
  *
- * @apiGroup Arbitrators
+ * @apiGroup Arbitrator
  *
  * @apiParam {String} address of arbitrator contract
  *
