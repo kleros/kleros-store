@@ -13,6 +13,9 @@
   * [Redeployment](#redeployment)
 * [Set https](#set-https)
 * [Api documentation](#api-documentation)
+  * [Generate api documentation](#generate-api-documentation)
+  * [Go to api documentation](#go-to-api-documentation)
+  * [Regenerate api documentation](#regenerate-api-documentation)
 
 
 ## Getting started
@@ -161,7 +164,8 @@ apidoc -f "routes/.*\\.js$" -i ./  -o public/apidoc/ # bug with fish terminal (u
 ### Go to api documentation
 
 ```
-open http://localhost:3000/apidoc/
+open http://localhost:3000/apidoc/ # local
+open https://kleros.io/kleros-store # remote on github page
 ```
 
 ### Regenerate api documentation
