@@ -153,6 +153,7 @@ sudo letsencrypt certonly --standalone -d
 ```
 
 ## Api documentation
+You can see [the latest API documentation in this link](https://kleros.io/kleros-store/) or generate the docs in a specific branch with the instructions below.
 
 ### Generate api documentation
 
