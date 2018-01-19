@@ -150,7 +150,7 @@ router.post(
  *   }
  */
 router.post(
-  '/:address/arbitrator/:arbitratorAddress/disputes/:disputeId',
+  '/:address/arbitrators/:arbitratorAddress/disputes/:disputeId',
   ProfileHandlers.updateDisputesProfile
 )
 
