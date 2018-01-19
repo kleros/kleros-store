@@ -162,11 +162,8 @@ apidoc -f "routes/.*\\.js$" -i ./  -o public/apidoc/ # bug with fish terminal (u
 ```
 
 ### Go to api documentation
-
-```
-open http://localhost:3000/apidoc/ # local
-open https://kleros.io/kleros-store # remote on github page
-```
+See it locally http://localhost:3000/apidoc/
+See it live https://kleros.io/kleros-store
 
 ### Regenerate api documentation
 
