@@ -64,7 +64,7 @@ Create `.env` file in the root directory with these keys:
 ```
 SECRET={secure secret e.g. dontusethisasyoursecret}
 DB_URI={uri of mongo instance e.g. mongodb://localhost/kleros}
-IPS_ALLOWED={add your ip if necessary}
+IPS_ALLOWED={add a comma separated list with no spaces of ips to allow e.g. ::1,127.0.0.1}
 ```
 
 ### Add a profile
