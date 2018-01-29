@@ -8,7 +8,8 @@ const express = require('express'),
     fs = require('fs'),
     colors = require('colors'),
     mongoose = require('mongoose'),
-    ipfilter = require('express-ipfilter').IpFilter
+    ipfilter = require('express-ipfilter').IpFilter,
+    seed = require('./seed')
 
 const index = require('./routes/index')
 
@@ -16,6 +17,9 @@ const index = require('./routes/index')
 require('dotenv').config()
 
 const config = require('./config')
+
+// Populate DB with sample data
+if (config.seedDb) { seed() }
 
 mongoose.Promise = require('bluebird')
 

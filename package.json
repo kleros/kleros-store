@@ -6,7 +6,8 @@
     "start-pm2": "pm2 start bin/www --name kleros-store",
     "restart-pm2": "pm2 restart all",
     "test": "NODE_ENV=test SERVER_PORT=6788 jest --forceExit",
-    "start": "node bin/www"
+    "start": "node bin/www",
+    "inspect": "node --inspect bin/www"
   },
   "dependencies": {
     "apidoc": "^0.17.6",
@@ -39,6 +40,7 @@
     }
   },
   "devDependencies": {
-    "standard": "^10.0.3"
+    "standard": "^10.0.3",
+    "mongoose-seed": "^0.4.1"
   }
 }

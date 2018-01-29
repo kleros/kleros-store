@@ -7,7 +7,7 @@
   * [Database](#database)
       * [Set mongo network](#set-mongo-network)
       * [Run mongo in local](#run-mongo-in-local)
-  * [Allow your ip](#allow-your-ip)
+  * [Set environment variables](#set-environment-variables)
   * [Add profile](#add-profile)
 * [Deployment](#deployment)
   * [Redeployment](#redeployment)
@@ -64,13 +64,10 @@ Create `.env` file in the root directory with these keys:
 ```
 SECRET={secure secret e.g. dontusethisasyoursecret}
 DB_URI={uri of mongo instance e.g. mongodb://localhost/kleros}
+IPS_ALLOWED={add a comma separated list with no spaces of ips to allow e.g. ::1,127.0.0.1}
 ```
 
-### Allow your ip
-
-Add your `ip` in the file `config.js :ipsAllowed`
-
-### Add an profile
+### Add a profile
 
 To add an user you can use the software `compass` and add an entry in the
 `kleros` collection.
