@@ -21,7 +21,7 @@ exports.updateProfile = async (req, res) => {
         message: err,
       })
     } else {
-      return res.json(Profile)
+      return res.status(201).json(Profile)
     }
   })
 }
@@ -79,6 +79,7 @@ exports.updateContractProfile = async (req, res) => {
     updateProfileDb(SecondProfileInstance),
   ])
 
+  res.status = 201
   return res.json([
     NewProfile,
     NewSecondProfile
@@ -171,6 +172,19 @@ exports.addFakeProfiles = async (req, res) => {
   return res.json(profileInstances)
 }
 
+exports.addNotification = async (req, res) => {
+  const address = req.params.address
+  const notficationDetails = req.body
+  let ProfileInstance = await getProfileDb(address)
+  // if not exists, we create this new user
+  if (_.isNull(ProfileInstance))
+    throw new Error('Profile does not exist')
+
+  await ProfileInstance.notifications.push(notficationDetails)
+  const NewProfile = await updateProfileDb(ProfileInstance)
+  return res.status(201).json(NewProfile)
+}
+
 const getProfileDb = address => {
   return new Promise((resolve, reject) => {
     Profile
@@ -189,10 +203,11 @@ const getProfileDb = address => {
 const updateProfileDb = Profile => {
   return new Promise((resolve, reject) => {
     Profile.save((err, newProfile) => {
-      if (err)
+      if (err) {
         reject({
           message: err,
         })
+      }
       resolve(newProfile)
     })
   })

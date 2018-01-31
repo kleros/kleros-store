@@ -10,28 +10,6 @@ router.get('/', function(req, res, next) {
 })
 
 /**
- * @api {post} fake-data/:address Add a fake profile
- *
- * @apiGroup Profile
- *
- * @apiParam {String} address Ethereum of the juror
- *
- * @apiSuccessExample {json} Success
- *   HTTP/1.1 200 OK
- *   {
- *     "_id": "59aca9607879b17103bb1b43",
- *     "contracts": [],
- *     "disputes": [],
- *     "__v": 0,
- *     "created_at": "2017-09-04T01:16:16.726Z"
- *   }
- */
-router.post(
-  '/fake-data/:address',
-  ProfileHandlers.addFakeProfiles
-)
-
-/**
  * @api {get} :address Get profile by address
  *
  * @apiGroup Profile
@@ -80,6 +58,11 @@ router.get(
 router.post(
   '/:address',
   ProfileHandlers.updateProfile
+)
+
+router.post(
+  "/:address/notifications",
+  ProfileHandlers.addNotification
 )
 
 /**

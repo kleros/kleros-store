@@ -30,13 +30,23 @@ const ProfileSchema = new Schema({
     hasRuled: Boolean,
     votes: [Number]
   }],
+  notifications: [{
+    notificationType: Number, // cooresponds to types enum
+    message: String,
+    data: {}, // extra field for json string of arbitrary data
+    created_at: {
+      type: Date,
+      default: Date.now
+    }
+  }],
   created_at: {
     type: Date,
     default: Date.now
   }
 },
 {
-  versionKey: false
+  versionKey: false,
+  usePushEach: true
 })
 
 module.exports = mongoose.model('profiles', ProfileSchema)
