@@ -31,11 +31,14 @@ const ProfileSchema = new Schema({
     votes: [Number]
   }],
   notifications: [{
-    type: String,
+    notificationType: Number, // cooresponds to types enum
     message: String,
     data: String, // extra field for json string of arbitrary data
-    date: Date.now
-  }]
+    created_at: {
+      type: Date,
+      default: Date.now
+    }
+  }],
   created_at: {
     type: Date,
     default: Date.now
