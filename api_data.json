@@ -142,7 +142,7 @@
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 OK\n{\n  \"_id\": \"59aca9607879b17103bb1b43\",\n  \"contracts\": [],\n  \"disputes\": [],\n  \"__v\": 0,\n  \"created_at\": \"2017-09-04T01:16:16.726Z\"\n}",
+          "content": "HTTP/1.1 200 OK\n{\n  \"_id\": \"59aca9607879b17103bb1b43\",\n  \"contracts\": [],\n  \"disputes\": [],\n  \"notifications\": [],\n  \"__v\": 0,\n  \"created_at\": \"2017-09-04T01:16:16.726Z\"\n}",
           "type": "json"
         }
       ]
@@ -215,7 +215,7 @@
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 OK\n{\n  \"_id\": \"59aca9607879b17103bb1b43\",\n  \"contracts\": [],\n  \"disputes\": [],\n  \"__v\": 0,\n  \"created_at\": \"2017-09-04T01:16:16.726Z\"\n}",
+          "content": "HTTP/1.1 200 OK\n{\n  \"_id\": \"59aca9607879b17103bb1b43\",\n  \"contracts\": [],\n  \"disputes\": [],\n  \"notifications\": [],\n  \"__v\": 0,\n  \"created_at\": \"2017-09-04T01:16:16.726Z\"\n}",
           "type": "json"
         }
       ]
@@ -279,7 +279,7 @@
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 OK\n{\n  \"_id\": \"59aca9607879b17103bb1b43\",\n  \"contracts\": [],\n  \"disputes\": [],\n  \"__v\": 0,\n  \"created_at\": \"2017-09-04T01:16:16.726Z\"\n}",
+          "content": "HTTP/1.1 200 OK\n{\n  \"_id\": \"59aca9607879b17103bb1b43\",\n  \"contracts\": [],\n  \"disputes\": [],\n  \"notifications\": [],\n  \"__v\": 0,\n  \"created_at\": \"2017-09-04T01:16:16.726Z\"\n}",
           "type": "json"
         }
       ]
@@ -311,7 +311,7 @@
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 OK\n{\n  \"_id\": \"59aca9607879b17103bb1b43\",\n  \"contracts\": [],\n  \"disputes\": [],\n  \"__v\": 0,\n  \"created_at\": \"2017-09-04T01:16:16.726Z\"\n}",
+          "content": "HTTP/1.1 200 OK\n{\n  \"_id\": \"59aca9607879b17103bb1b43\",\n  \"contracts\": [],\n  \"disputes\": [],\n  \"notifications\": [],\n  \"__v\": 0,\n  \"created_at\": \"2017-09-04T01:16:16.726Z\"\n}",
           "type": "json"
         }
       ]
@@ -320,5 +320,37 @@
     "filename": "./routes/index.js",
     "groupTitle": "Profile",
     "name": "PostAddressContractsContractaddressEvidence"
+  },
+  {
+    "type": "post",
+    "url": ":address/notifications",
+    "title": "Add a new notification to profile",
+    "group": "Profile",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "address",
+            "description": "<p>Ethereum of the user</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 OK\n{\n  \"_id\": \"59aca9607879b17103bb1b43\",\n  \"contracts\": [],\n  \"disputes\": [],\n  \"notifications\": [],\n  \"__v\": 0,\n  \"created_at\": \"2017-09-04T01:16:16.726Z\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./routes/index.js",
+    "groupTitle": "Profile",
+    "name": "PostAddressNotifications"
   }
 ]
