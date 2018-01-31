@@ -26,6 +26,7 @@ router.get('/', function(req, res, next) {
  *     "_id": "59aca9607879b17103bb1b43",
  *     "contracts": [],
  *     "disputes": [],
+ *     "notifications": [],
  *     "__v": 0,
  *     "created_at": "2017-09-04T01:16:16.726Z"
  *   }
@@ -51,6 +52,7 @@ router.get(
  *     "_id": "59aca9607879b17103bb1b43",
  *     "contracts": [],
  *     "disputes": [],
+ *     "notifications": [],
  *     "__v": 0,
  *     "created_at": "2017-09-04T01:16:16.726Z"
  *   }
@@ -60,6 +62,25 @@ router.post(
   ProfileHandlers.updateProfile
 )
 
+/**
+ * @api {post} :address/notifications Add a new notification to profile
+ *
+ * @apiGroup Profile
+ *
+ * @apiParam {String} address Ethereum of the user
+ *
+ *
+ * @apiSuccessExample {json} Success
+ *   HTTP/1.1 200 OK
+ *   {
+ *     "_id": "59aca9607879b17103bb1b43",
+ *     "contracts": [],
+ *     "disputes": [],
+ *     "notifications": [],
+ *     "__v": 0,
+ *     "created_at": "2017-09-04T01:16:16.726Z"
+ *   }
+ */
 router.post(
   "/:address/notifications",
   ProfileHandlers.addNotification
@@ -80,6 +101,7 @@ router.post(
  *     "_id": "59aca9607879b17103bb1b43",
  *     "contracts": [],
  *     "disputes": [],
+ *     "notifications": [],
  *     "__v": 0,
  *     "created_at": "2017-09-04T01:16:16.726Z"
  *   }
@@ -104,6 +126,7 @@ router.post(
  *     "_id": "59aca9607879b17103bb1b43",
  *     "contracts": [],
  *     "disputes": [],
+ *     "notifications": [],
  *     "__v": 0,
  *     "created_at": "2017-09-04T01:16:16.726Z"
  *   }
