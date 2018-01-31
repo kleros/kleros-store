@@ -33,7 +33,7 @@ const ProfileSchema = new Schema({
   notifications: [{
     notificationType: Number, // cooresponds to types enum
     message: String,
-    data: String, // extra field for json string of arbitrary data
+    data: {}, // extra field for json string of arbitrary data
     created_at: {
       type: Date,
       default: Date.now
