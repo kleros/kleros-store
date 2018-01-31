@@ -11,6 +11,10 @@ const ArbitratorsSchema = new Schema({
     type: Date,
     default: Date.now
   }
+},
+{
+  versionKey: false,
+  usePushEach: true
 })
 
 module.exports = mongoose.model('arbitrators', ArbitratorsSchema)

@@ -27,7 +27,8 @@
     "mongoose": "^4.11.9",
     "morgan": "^1.8.2",
     "serve-favicon": "^2.4.5",
-    "supertest": "^3.0.0"
+    "supertest": "^3.0.0",
+    "uuid": "^3.2.1"
   },
   "apidoc": {
     "title": "Kleros store",
@@ -40,7 +41,7 @@
     }
   },
   "devDependencies": {
-    "standard": "^10.0.3",
-    "mongoose-seed": "^0.4.1"
+    "mongoose-seed": "^0.4.1",
+    "standard": "^10.0.3"
   }
 }

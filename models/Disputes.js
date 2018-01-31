@@ -28,7 +28,8 @@ const DisputesSchema = new Schema({
   }
 },
 {
-  versionKey: false
+  versionKey: false,
+  usePushEach: true
 })
 
 // index disputes by aribtrator address and then disputeId
