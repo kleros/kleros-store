@@ -29,5 +29,7 @@ describe('Notifications', () => {
     expect(returnedNotification.message).toBe(testNotification.message)
     expect(returnedNotification.data).toEqual(testNotification.data)
     expect(returnedNotification.created_at).toBeTruthy()
+    expect(returnedNotification.notificationId).toBeTruthy()
+    expect(returnedNotification.read).toBe(false)
   })
 })
