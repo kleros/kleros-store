@@ -45,7 +45,8 @@ const ProfileSchema = new Schema({
   }
 },
 {
-  versionKey: false
+  versionKey: false,
+  usePushEach: true
 })
 
 module.exports = mongoose.model('profiles', ProfileSchema)
