@@ -175,20 +175,13 @@ exports.addFakeProfiles = async (req, res) => {
 exports.addNotification = async (req, res) => {
   const address = req.params.address
   const notficationDetails = req.body
-  console.log(address)
-  console.log(notficationDetails)
-  console.log("in addNotification")
   let ProfileInstance = await getProfileDb(address)
-  console.log(ProfileInstance)
   // if not exists, we create this new user
   if (_.isNull(ProfileInstance))
     throw new Error('Profile does not exist')
 
-  console.log(1)
   await ProfileInstance.notifications.push(notficationDetails)
-  console.log(2)
   const NewProfile = await updateProfileDb(ProfileInstance)
-  console.log(3)
   return res.status(201).json(NewProfile)
 }
 
@@ -208,19 +201,13 @@ const getProfileDb = address => {
 }
 
 const updateProfileDb = Profile => {
-  console.log(2.5)
   return new Promise((resolve, reject) => {
-    console.log(2.6)
     Profile.save((err, newProfile) => {
-      console.log(2.7)
       if (err) {
-        console.log(err)
         reject({
           message: err,
         })
       }
-      console.log("should be good?")
-      console.log(newProfile)
       resolve(newProfile)
     })
   })
