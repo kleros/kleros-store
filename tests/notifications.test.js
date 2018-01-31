@@ -25,7 +25,7 @@ describe('Notifications', () => {
     expect(response.statusCode).toBe(201)
     expect(response.body.notifications.length).toBe(1)
     const returnedNotification = response.body.notifications[0]
-    expect(returnedNotification.type).toBe(testNotification.type)
+    expect(returnedNotification.notificationType).toBe(testNotification.notificationType)
     expect(returnedNotification.message).toBe(testNotification.message)
     expect(returnedNotification.data).toEqual(testNotification.data)
     expect(returnedNotification.created_at).toBeTruthy()
