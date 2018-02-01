@@ -68,6 +68,7 @@ router.post(
  * @apiGroup Profile
  *
  * @apiParam {String} address Ethereum of the user
+ * @apiParam {String} transaction hash of tx that produced event
  *
  *
  * @apiSuccessExample {json} Success
@@ -82,7 +83,7 @@ router.post(
  *   }
  */
 router.post(
-  "/:address/notifications",
+  "/:address/notifications/:txHash",
   ProfileHandlers.addNotification
 )
 

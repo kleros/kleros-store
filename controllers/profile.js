@@ -174,15 +174,29 @@ exports.addFakeProfiles = async (req, res) => {
 
 exports.addNotification = async (req, res) => {
   const address = req.params.address
+  const txHash = req.params.txHash
   const notficationDetails = req.body
   let ProfileInstance = await getProfileDb(address)
   // if not exists, we create this new user
   if (_.isNull(ProfileInstance))
     throw new Error('Profile does not exist')
 
-  await ProfileInstance.notifications.push(notficationDetails)
-  const NewProfile = await updateProfileDb(ProfileInstance)
-  return res.status(201).json(NewProfile)
+  const indexContract = ProfileInstance.notifications.findIndex(
+    notification => (notification.txHash === txHash)
+  )
+
+  // if we have already seen it don't add another
+  if (indexContract === -1) {
+    const newNotification = {
+      txHash,
+      ...notficationDetails
+    }
+    ProfileInstance.notifications.push(newNotification)
+    const NewProfile = await updateProfileDb(ProfileInstance)
+    return res.status(201).json(NewProfile)
+  } else {
+    return res.status(304).json(ProfileInstance)
+  }
 }
 
 const getProfileDb = address => {
