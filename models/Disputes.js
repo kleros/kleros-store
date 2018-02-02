@@ -15,6 +15,7 @@ const DisputesSchema = new Schema({
   fee: Number,
   information : String,
   justification : String,
+  subscribers: [], // jurors can subscribe to notifications for a dispute
   ruling: Number, // 0 means no decision
   session: Number, // session that dispute was active
   resolutionOptions: [{

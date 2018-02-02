@@ -9,7 +9,7 @@ exports.updateDisputeProfile = async (req, res) => {
 
   // update db with body
   const newDispute = await updateDisputeDb(new Dispute(bodyContract))
-  return res.json(newDispute)
+  return res.status(201).json(newDispute)
 }
 
 exports.getDispute = async (req, res) => {
@@ -18,6 +18,18 @@ exports.getDispute = async (req, res) => {
 
   const dispute = await getDisputeDb(arbitratorAddress, disputeId)
   return res.json(dispute)
+}
+
+exports.addSubscriber = async (req, res) => {
+  const disputeId = req.params.disputeId
+  const arbitratorAddress = req.params.arbitratorAddress
+  const address = req.body.address
+
+  const dispute = await getDisputeDb(arbitratorAddress, disputeId)
+  dispute.subscribers.push(address)
+
+  await updateDisputeDb(dispute)
+  return res.status(201).json(dispute)
 }
 
 const getDisputeDb = (arbitratorAddress, disputeId) => {
