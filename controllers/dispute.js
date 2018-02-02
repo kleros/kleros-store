@@ -7,8 +7,15 @@ exports.updateDisputeProfile = async (req, res) => {
   const arbitratorAddress = req.params.arbitratorAddress
   const bodyContract = req.body
 
+  const dispute = await getDisputeDb(arbitratorAddress, disputeId)
+  // don't want to lose our subscribers on update
+  let subscribers = []
+  if (dispute) subscribers = dispute.subscribers
   // update db with body
-  const newDispute = await updateDisputeDb(new Dispute(bodyContract))
+  const newDispute = await updateDisputeDb(new Dispute({
+    ...bodyContract,
+    subscribers
+  }))
   return res.status(201).json(newDispute)
 }
 
