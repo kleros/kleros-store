@@ -21,7 +21,7 @@ exports.updateProfile = async (req, res) => {
         message: err,
       })
     } else {
-      return res.json(Profile)
+      return res.status(201).json(Profile)
     }
   })
 }
@@ -79,6 +79,7 @@ exports.updateContractProfile = async (req, res) => {
     updateProfileDb(SecondProfileInstance),
   ])
 
+  res.status = 201
   return res.json([
     NewProfile,
     NewSecondProfile
@@ -112,12 +113,13 @@ exports.addEvidenceContractProfile = async (req, res) => {
 
 exports.updateDisputesProfile = async (req, res) => {
   const address = req.params.address
-  const disputeHash = req.params.disputeHash
+  const disputeId = req.params.disputeId
+  const arbitratorAddress = req.params.arbitratorAddress
 
   const ProfileInstance = await getProfileDb(address)
 
   const indexContract = ProfileInstance.disputes.findIndex(
-    dispute => dispute.hash === disputeHash
+    dispute => (dispute.disputeId === disputeId && dispute.arbitratorAddress === arbitratorAddress)
   )
 
   if (indexContract >= 0) {
@@ -170,6 +172,33 @@ exports.addFakeProfiles = async (req, res) => {
   return res.json(profileInstances)
 }
 
+exports.addNotification = async (req, res) => {
+  const address = req.params.address
+  const txHash = req.params.txHash
+  const notficationDetails = req.body
+  let ProfileInstance = await getProfileDb(address)
+  // if not exists, we create this new user
+  if (_.isNull(ProfileInstance))
+    throw new Error('Profile does not exist')
+
+  const indexContract = ProfileInstance.notifications.findIndex(
+    notification => (notification.txHash === txHash)
+  )
+
+  // if we have already seen it don't add another
+  if (indexContract === -1) {
+    const newNotification = {
+      txHash,
+      ...notficationDetails
+    }
+    ProfileInstance.notifications.push(newNotification)
+    const NewProfile = await updateProfileDb(ProfileInstance)
+    return res.status(201).json(NewProfile)
+  } else {
+    return res.status(304).json(ProfileInstance)
+  }
+}
+
 const getProfileDb = address => {
   return new Promise((resolve, reject) => {
     Profile
@@ -188,10 +217,11 @@ const getProfileDb = address => {
 const updateProfileDb = Profile => {
   return new Promise((resolve, reject) => {
     Profile.save((err, newProfile) => {
-      if (err)
+      if (err) {
         reject({
           message: err,
         })
+      }
       resolve(newProfile)
     })
   })

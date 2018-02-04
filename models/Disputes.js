@@ -5,6 +5,7 @@ const DisputesSchema = new Schema({
   hash: String,
   id: String,
   disputeId: Number,
+  arbitratorAddress: String,
   contractAddress: String,
   partyA : String,
   partyB : String,
@@ -14,6 +15,7 @@ const DisputesSchema = new Schema({
   fee: Number,
   information : String,
   justification : String,
+  subscribers: [], // jurors can subscribe to notifications for a dispute
   ruling: Number, // 0 means no decision
   session: Number, // session that dispute was active
   resolutionOptions: [{
@@ -27,7 +29,11 @@ const DisputesSchema = new Schema({
   }
 },
 {
-  versionKey: false
+  versionKey: false,
+  usePushEach: true
 })
+
+// index disputes by aribtrator address and then disputeId
+DisputesSchema.index({arbitratorAddress: 1, disputeId: -1})
 
 module.exports = mongoose.model('disputes', DisputesSchema)

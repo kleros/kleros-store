@@ -5,7 +5,9 @@
   "scripts": {
     "start-pm2": "pm2 start bin/www --name kleros-store",
     "restart-pm2": "pm2 restart all",
-    "test": "NODE_ENV=test SERVER_PORT=6788 jest --forceExit"
+    "test": "NODE_ENV=test SERVER_PORT=6788 jest --forceExit",
+    "start": "node bin/www",
+    "inspect": "node --inspect bin/www"
   },
   "dependencies": {
     "apidoc": "^0.17.6",
@@ -21,7 +23,7 @@
     "global": "^4.3.2",
     "https": "^1.0.0",
     "jade": "~1.11.0",
-    "jest": "^21.2.1",
+    "jest": "^22.1.2",
     "mongoose": "^4.11.9",
     "morgan": "^1.8.2",
     "serve-favicon": "^2.4.5",
@@ -38,6 +40,7 @@
     }
   },
   "devDependencies": {
+    "mongoose-seed": "^0.4.1",
     "standard": "^10.0.3"
   }
 }

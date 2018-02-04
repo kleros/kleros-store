@@ -7,12 +7,15 @@
   * [Database](#database)
       * [Set mongo network](#set-mongo-network)
       * [Run mongo in local](#run-mongo-in-local)
-  * [Allow your ip](#allow-your-ip)
+  * [Set environment variables](#set-environment-variables)
   * [Add profile](#add-profile)
 * [Deployment](#deployment)
   * [Redeployment](#redeployment)
 * [Set https](#set-https)
 * [Api documentation](#api-documentation)
+  * [Generate api documentation](#generate-api-documentation)
+  * [Go to api documentation](#go-to-api-documentation)
+  * [Regenerate api documentation](#regenerate-api-documentation)
 
 
 ## Getting started
@@ -61,13 +64,10 @@ Create `.env` file in the root directory with these keys:
 ```
 SECRET={secure secret e.g. dontusethisasyoursecret}
 DB_URI={uri of mongo instance e.g. mongodb://localhost/kleros}
+IPS_ALLOWED={add a comma separated list with no spaces of ips to allow e.g. ::1,127.0.0.1}
 ```
 
-### Allow your ip
-
-Add your `ip` in the file `config.js :ipsAllowed`
-
-### Add an profile
+### Add a profile
 
 To add an user you can use the software `compass` and add an entry in the
 `kleros` collection.
@@ -155,18 +155,16 @@ sudo letsencrypt certonly --standalone -d
 
 ```
 yarn add global apidoc
-apidoc -f "controllers/.*\\.js$" -i ./  -o apidoc/ # bug with fish terminal (use bash)
+apidoc -f "routes/.*\\.js$" -i ./  -o public/apidoc/ # bug with fish terminal (use bash)
 ```
 
 ### Go to api documentation
-
-```
-open http://localhost:3000/apidoc/
-```
+See it locally http://localhost:3000/apidoc/
+See it live https://kleros.io/kleros-store
 
 ### Regenerate api documentation
 
 ```
-rm -rf apidoc
-apidoc -f "routes/.*\\.js$" -i ./  -o apidoc/ # bug with fish terminal (use bash)
+rm -rf public/apidoc
+apidoc -f "routes/.*\\.js$" -i ./  -o public/apidoc/ # bug with fish terminal (use bash)
 ```

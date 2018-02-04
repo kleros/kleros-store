@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const ProfileHandlers = require('../controllers/profile')
 const DisputeHandlers = require('../controllers/dispute')
+const ArbitratorsHandlers = require('../controllers/arbitrators')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -9,26 +10,7 @@ router.get('/', function(req, res, next) {
 })
 
 /**
- * @api {post} kleros Add a fake profile
- *
- * @apiGroup Profile
- *
- * @apiParam {String} address Ethereum of the juror
- *
- * @apiSuccessExample {json} Success
- *   HTTP/1.1 200 OK
- *   {
- *     "_id": "59aca9607879b17103bb1b43",
- *     "contracts": [],
- *     "disputes": [],
- *     "__v": 0,
- *     "created_at": "2017-09-04T01:16:16.726Z"
- *   }
- */
-router.post('/fake-data/:address', ProfileHandlers.addFakeProfiles)
-
-/**
- * @api {get} kleros/:address Get profile by address
+ * @api {get} :address Get profile by address
  *
  * @apiGroup Profile
  *
@@ -44,16 +26,20 @@ router.post('/fake-data/:address', ProfileHandlers.addFakeProfiles)
  *     "_id": "59aca9607879b17103bb1b43",
  *     "contracts": [],
  *     "disputes": [],
+ *     "notifications": [],
  *     "__v": 0,
  *     "created_at": "2017-09-04T01:16:16.726Z"
  *   }
  * @apiErrorExample {json} List error
  *    HTTP/1.1 500 Internal Server Error
  */
-router.get('/:address', ProfileHandlers.getProfileByAddress)
+router.get(
+  '/:address',
+  ProfileHandlers.getProfileByAddress
+)
 
 /**
- * @api {post} kleros Add/Update a profile
+ * @api {post} :address Add/Update a profile
  *
  * @apiGroup Profile
  *
@@ -66,14 +52,43 @@ router.get('/:address', ProfileHandlers.getProfileByAddress)
  *     "_id": "59aca9607879b17103bb1b43",
  *     "contracts": [],
  *     "disputes": [],
+ *     "notifications": [],
  *     "__v": 0,
  *     "created_at": "2017-09-04T01:16:16.726Z"
  *   }
  */
-router.post('/:address', ProfileHandlers.updateProfile)
+router.post(
+  '/:address',
+  ProfileHandlers.updateProfile
+)
 
 /**
- * @api {post} kleros Add an evidence in the contract
+ * @api {post} :address/notifications Add a new notification to profile
+ *
+ * @apiGroup Profile
+ *
+ * @apiParam {String} address Ethereum of the user
+ * @apiParam {String} transaction hash of tx that produced event
+ *
+ *
+ * @apiSuccessExample {json} Success
+ *   HTTP/1.1 200 OK
+ *   {
+ *     "_id": "59aca9607879b17103bb1b43",
+ *     "contracts": [],
+ *     "disputes": [],
+ *     "notifications": [],
+ *     "__v": 0,
+ *     "created_at": "2017-09-04T01:16:16.726Z"
+ *   }
+ */
+router.post(
+  "/:address/notifications/:txHash",
+  ProfileHandlers.addNotification
+)
+
+/**
+ * @api {post} :address/contracts/:contractAddress/evidence Add an evidence in the contract
  *
  * @apiGroup Profile
  *
@@ -87,6 +102,7 @@ router.post('/:address', ProfileHandlers.updateProfile)
  *     "_id": "59aca9607879b17103bb1b43",
  *     "contracts": [],
  *     "disputes": [],
+ *     "notifications": [],
  *     "__v": 0,
  *     "created_at": "2017-09-04T01:16:16.726Z"
  *   }
@@ -97,7 +113,7 @@ router.post(
 )
 
 /**
- * @api {post} kleros Add/Update a contract
+ * @api {post} :address/contracts/:contractAddress Add/Update a contract
  *
  * @apiGroup Profile
  *
@@ -111,6 +127,7 @@ router.post(
  *     "_id": "59aca9607879b17103bb1b43",
  *     "contracts": [],
  *     "disputes": [],
+ *     "notifications": [],
  *     "__v": 0,
  *     "created_at": "2017-09-04T01:16:16.726Z"
  *   }
@@ -121,7 +138,7 @@ router.post(
 )
 
 /**
- * @api {post} kleros Add/Update a dispute
+ * @api {post} :address/arbitrator/:arbitratorAddress/disputes/:disputeId Add/Update a dispute
  *
  * @apiGroup Profile
  *
@@ -140,12 +157,12 @@ router.post(
  *   }
  */
 router.post(
-  '/:address/disputes/:disputeHash',
+  '/:address/arbitrators/:arbitratorAddress/disputes/:disputeId',
   ProfileHandlers.updateDisputesProfile
 )
 
 /**
- * @api {post} kleros Add/Update a dispute
+ * @api {post} arbitrators/:arbitratorAddress/disputes/:disputeId Add/Update a dispute
  *
  * @apiGroup Dispute
  *
@@ -163,12 +180,12 @@ router.post(
  *   }
  */
 router.post(
-  '/disputes/:disputeHash',
+  '/arbitrators/:arbitratorAddress/disputes/:disputeId',
   DisputeHandlers.updateDisputeProfile
 )
 
 /**
- * @api {post} kleros fetch dispute by hash
+ * @api {get} arbitrators/:arbitratorAddress/disputes/:disputeId fetch dispute by arbitrator address and disputeId
  *
  * @apiGroup Profile
  *
@@ -186,8 +203,77 @@ router.post(
  *   }
  */
 router.get(
-  '/disputes/:disputeHash',
-  DisputeHandlers.getDisputeByHash
+  '/arbitrators/:arbitratorAddress/disputes/:disputeId',
+  DisputeHandlers.getDispute
+)
+
+/**
+ * @api {get} arbitrators/:arbitratorAddress/disputes/:disputeId fetch dispute by arbitrator address and disputeId
+ *
+ * @apiGroup Profile
+ *
+ * @apiParam {String} unique hash of the dispute
+ *
+ *
+ * @apiSuccessExample {json} Success
+ *   HTTP/1.1 200 OK
+ *   {
+ *     "_id": "59aca9607879b17103bb1b43",
+ *     "contracts": [],
+ *     "disputes": [],
+ *     "__v": 0,
+ *     "created_at": "2017-09-04T01:16:16.726Z"
+ *   }
+ */
+router.post(
+  '/arbitrators/:arbitratorAddress/disputes/:disputeId/subscribers',
+  DisputeHandlers.addSubscriber
+)
+
+/**
+ * @api {post} arbitrators/:arbitratorAddress Add/Update a arbitrator
+ *
+ * @apiGroup Arbitrator
+ *
+ * @apiParam {String} address of arbitrator
+ *
+ *
+ * @apiSuccessExample {json} Success
+ *   HTTP/1.1 200 OK
+ *   {
+ *     "_id": "59aca9607879b17103bb1b43",
+ *     "address": '0x133b5b851cc62de33a02c928f6ac112cd42d1d83',
+ *     "lastBlock": 5235,
+ *     "__v": 0,
+ *     "created_at": "2017-09-04T01:16:16.726Z"
+ *   }
+ */
+router.post(
+  '/arbitrators/:arbitratorAddress',
+  ArbitratorsHandlers.updateArbitrator
+)
+
+/**
+ * @api {get} arbitrators/:arbitratorAddress fetch arbitrator with last block data
+ *
+ * @apiGroup Arbitrator
+ *
+ * @apiParam {String} address of arbitrator contract
+ *
+ *
+ * @apiSuccessExample {json} Success
+ *   HTTP/1.1 200 OK
+ *   {
+ *     "_id": "59aca9607879b17103bb1b43",
+ *     "address": '0x133b5b851cc62de33a02c928f6ac112cd42d1d83',
+ *     "lastBlock": 5235,
+ *     "__v": 0,
+ *     "created_at": "2017-09-04T01:16:16.726Z"
+ *   }
+ */
+router.get(
+  '/arbitrators/:arbitratorAddress',
+  ArbitratorsHandlers.getArbitrator
 )
 
 module.exports = router

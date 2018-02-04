@@ -3,10 +3,10 @@ const Schema = mongoose.Schema
 
 const ProfileSchema = new Schema({
   address: {
-    type: String
+    type: String,
+    index: true
   },
   session: Number,
-  balance: Number, // for demo store balance here
   contracts : [{
     address: String,
     hash : String,
@@ -24,10 +24,27 @@ const ProfileSchema = new Schema({
     }]
   }],
   disputes : [{
-    hash: String, // use to fetch dispute
+    disputeId: Number, // joint key
+    arbitratorAddress: String, // joint key
     isJuror: Boolean,
     hasRuled: Boolean,
     votes: [Number]
+  }],
+  notifications: [{
+    txHash: {
+      type: String,
+    }, // uuid for notification
+    notificationType: Number, // cooresponds to types enum
+    read: {
+      type: Boolean,
+      default: false
+    },
+    message: String,
+    data: {}, // extra field for json string of arbitrary data
+    created_at: {
+      type: Date,
+      default: Date.now
+    }
   }],
   created_at: {
     type: Date,
@@ -35,7 +52,8 @@ const ProfileSchema = new Schema({
   }
 },
 {
-  versionKey: false
+  versionKey: false,
+  usePushEach: true
 })
 
 module.exports = mongoose.model('profiles', ProfileSchema)

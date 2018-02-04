@@ -1,13 +1,69 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
 version: 2
 jobs:
   build:
     docker:
-      - image: debian:stretch
+      # specify the version you desire here
+      - image: circleci/node:latest
+      - image: circleci/mongo:latest
+        command: [mongod, --smallfiles]
+
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/mongo:3.4.4
+
+    working_directory: ~/repo
+
     steps:
       - checkout
-      - run:
-          name: Tests
-          command: yarn test
-      - run:
-          name: Deploy
-          command: date
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run: yarn install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      # run tests!
+      - run: yarn test
+
+      # can access mongo on localhost
+      - run: sleep 5 && nc -vz localhost 27017
+
+  deploy-gh-pages:
+    docker:
+      - image: circleci/node:latest
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+      # Generate API DOC
+      - run: yarn add apidoc
+      - run: node_modules/apidoc/bin/apidoc -f "./routes/.*\\.js$" -i ./  -o ./public/apidoc/
+      # Publish API DOC in Github Pages
+      - run: ./scripts/deploy-ghpages.sh ./public/apidoc
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build:
+          filters:
+            branches:
+              ignore: develop
+      - deploy-gh-pages:
+          filters:
+            branches:
+              only: develop
