@@ -68,6 +68,7 @@ router.post(
  * @apiGroup Profile
  *
  * @apiParam {String} address Ethereum of the user
+ * @apiParam {String} transaction hash of tx that produced event
  *
  *
  * @apiSuccessExample {json} Success
@@ -82,7 +83,7 @@ router.post(
  *   }
  */
 router.post(
-  "/:address/notifications",
+  "/:address/notifications/:txHash",
   ProfileHandlers.addNotification
 )
 
@@ -204,6 +205,29 @@ router.post(
 router.get(
   '/arbitrators/:arbitratorAddress/disputes/:disputeId',
   DisputeHandlers.getDispute
+)
+
+/**
+ * @api {get} arbitrators/:arbitratorAddress/disputes/:disputeId fetch dispute by arbitrator address and disputeId
+ *
+ * @apiGroup Profile
+ *
+ * @apiParam {String} unique hash of the dispute
+ *
+ *
+ * @apiSuccessExample {json} Success
+ *   HTTP/1.1 200 OK
+ *   {
+ *     "_id": "59aca9607879b17103bb1b43",
+ *     "contracts": [],
+ *     "disputes": [],
+ *     "__v": 0,
+ *     "created_at": "2017-09-04T01:16:16.726Z"
+ *   }
+ */
+router.post(
+  '/arbitrators/:arbitratorAddress/disputes/:disputeId/subscribers',
+  DisputeHandlers.addSubscriber
 )
 
 /**

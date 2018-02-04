@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-const getUuid = require('uuid/v4') // random uuid
 
 const ProfileSchema = new Schema({
   address: {
@@ -32,9 +31,8 @@ const ProfileSchema = new Schema({
     votes: [Number]
   }],
   notifications: [{
-    notificationId: {
+    txHash: {
       type: String,
-      default: getUuid
     }, // uuid for notification
     notificationType: Number, // cooresponds to types enum
     read: {
