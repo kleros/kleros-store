@@ -34,6 +34,7 @@ const ProfileSchema = new Schema({
     txHash: {
       type: String,
     }, // uuid for notification
+    logIndex: Number, // isn't enough just to have txHash
     notificationType: Number, // cooresponds to types enum
     read: {
       type: Boolean,
