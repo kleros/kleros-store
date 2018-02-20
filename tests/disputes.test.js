@@ -3,7 +3,7 @@ const request = require('supertest')
 
 describe('Disputes', () => {
   test('add subscriber to dispute', async () => {
-    const testArbitratorAddress = "0x0"
+    const testArbitratorAddress = "0x0" + Math.random()
     const testDisputeId = 1
     const testSubscriberAddress = "0x1"
 
