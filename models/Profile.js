@@ -7,6 +7,7 @@ const ProfileSchema = new Schema({
     index: true
   },
   session: Number,
+  lastBlock: Number,
   contracts : [{
     address: String,
     hash : String,
@@ -28,7 +29,8 @@ const ProfileSchema = new Schema({
     arbitratorAddress: String, // joint key
     isJuror: Boolean,
     hasRuled: Boolean,
-    votes: [Number]
+    votes: [Number],
+    netPNK: Number
   }],
   notifications: [{
     txHash: {
