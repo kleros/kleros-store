@@ -23,10 +23,8 @@ const DisputesSchema = new Schema({
     description: String,
     value: Number
   }],
-  created_at: {
-    type: Date,
-    default: Date.now
-  }
+  createdAt: Number,
+  ruledAt: Number
 },
 {
   versionKey: false,
