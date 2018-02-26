@@ -72,8 +72,8 @@ module.exports = jurorAddress => {
             hash : 'l88df39fd7fe94897c2ff7ea9eb98590ed7ecc11a6e499b64a75bb5136311712',
             partyA : partyA,
             partyB : partyB,
-            email: 'contact@paywithink.com',
-            title: 'title',
+            email: 'open@bazar.fr',
+            name: 'name',
             description: 'description',
             evidencePartyA: [
               {
@@ -109,8 +109,8 @@ module.exports = jurorAddress => {
             hash : 'l98df39fd7fe94897c2ff7ea9eb98590ed7ecc11a6e499b64a75bb5136311712',
             partyA : partyA,
             partyB : partyB,
-            email: 'contact@paywithink.com',
-            title: 'different title',
+            email: 'open@bazar.fr',
+            name: 'different name',
             description: 'different description',
             evidencePartyA: [
               {
@@ -152,8 +152,8 @@ module.exports = jurorAddress => {
             hash : 'l88df39fd7fe94897c2ff7ea9eb98590ed7ecc11a6e499b64a75bb5136311712',
             partyA : partyA,
             partyB : partyB,
-            email: 'p2pmarket@paywithink.com',
-            title: 'title',
+            email: 'open@bazar.fr',
+            name: 'name',
             description: 'description',
             evidencePartyA: [
               {
@@ -189,8 +189,8 @@ module.exports = jurorAddress => {
             hash : 'l98df39fd7fe94897c2ff7ea9eb98590ed7ecc11a6e499b64a75bb5136311712',
             partyA : partyA,
             partyB : partyB,
-            email: 'contact@paywithink.com',
-            title: 'different title',
+            email: 'open@bazar.fr',
+            name: 'different name',
             description: 'different description',
             evidencePartyA: [
               {
