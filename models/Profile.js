@@ -16,6 +16,7 @@ const ProfileSchema = new Schema({
     timeout: Number,
     email: String,
     description: String,
+    name: String,
     disputeId: Number,
     evidences: [{
       name: String,

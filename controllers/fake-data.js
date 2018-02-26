@@ -73,6 +73,7 @@ module.exports = jurorAddress => {
             partyA : partyA,
             partyB : partyB,
             email: 'open@bazar.fr',
+            name: 'name',
             description: 'description',
             evidencePartyA: [
               {
@@ -109,6 +110,7 @@ module.exports = jurorAddress => {
             partyA : partyA,
             partyB : partyB,
             email: 'open@bazar.fr',
+            name: 'different name',
             description: 'different description',
             evidencePartyA: [
               {
@@ -151,6 +153,7 @@ module.exports = jurorAddress => {
             partyA : partyA,
             partyB : partyB,
             email: 'open@bazar.fr',
+            name: 'name',
             description: 'description',
             evidencePartyA: [
               {
@@ -187,6 +190,7 @@ module.exports = jurorAddress => {
             partyA : partyA,
             partyB : partyB,
             email: 'open@bazar.fr',
+            name: 'different name',
             description: 'different description',
             evidencePartyA: [
               {
