@@ -4,6 +4,7 @@
 
 * [Getting started](#getting-started)
   * [Install dependancies](#install-dependancies)
+  * [Run tests](#run-tests)
   * [Database](#database)
       * [Set mongo network](#set-mongo-network)
       * [Run mongo in local](#run-mongo-in-local)
@@ -33,6 +34,18 @@ yarn start
 ```
 
 GOTO http://localhost:3000.
+
+### Run tests
+
+At first, run `mongo` with
+```
+mongod # use sudo if necessary
+```
+
+And run the tests with
+```
+yarn test
+```
 
 ### Database
 
@@ -159,8 +172,9 @@ apidoc -f "routes/.*\\.js$" -i ./  -o public/apidoc/ # bug with fish terminal (u
 ```
 
 ### Go to api documentation
-See it locally http://localhost:3000/apidoc/
-See it live https://kleros.io/kleros-store
+
+See it locally http://localhost:3000/apidoc/.
+See it live https://kleros.io/kleros-store.
 
 ### Regenerate api documentation
 
