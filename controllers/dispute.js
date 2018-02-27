@@ -43,7 +43,7 @@ const getDisputeDb = (arbitratorAddress, disputeId) => {
   return new Promise((resolve, reject) => {
     Dispute
       .findOne({arbitratorAddress, disputeId})
-      .sort('-created_at')
+      .sort('-updated_at')
       .exec(
         (err, Dispute) => {
           if (err)

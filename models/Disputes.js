@@ -10,7 +10,7 @@ const DisputesSchema = new Schema({
   partyA : String,
   partyB : String,
   title : String,
-  deadline : String,
+  deadline : Number,
   status : String,
   fee: Number,
   information : String,
@@ -23,7 +23,9 @@ const DisputesSchema = new Schema({
     description: String,
     value: Number
   }],
-  created_at: {
+  createdAt: Number,
+  ruledAt: Number,
+  updated_at: {
     type: Date,
     default: Date.now
   }

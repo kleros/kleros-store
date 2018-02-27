@@ -22,7 +22,8 @@ const ProfileSchema = new Schema({
     evidences: [{
       name: String,
       description: String,
-      url: String
+      url: String,
+      submittedAt: Number
     }]
   }],
   disputes : [{
