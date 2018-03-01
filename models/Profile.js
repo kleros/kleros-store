@@ -29,9 +29,7 @@ const ProfileSchema = new Schema({
   disputes : [{
     disputeId: Number, // joint key
     arbitratorAddress: String, // joint key
-    isJuror: Boolean,
-    hasRuled: Boolean,
-    votes: [Number],
+    appealDraws: [],
     netPNK: Number
   }],
   notifications: [{
