@@ -23,8 +23,8 @@ const DisputesSchema = new Schema({
     description: String,
     value: Number
   }],
-  createdAt: Number,
-  ruledAt: Number,
+  appealCreatedAt: [],
+  appealRuledAt: [],
   updated_at: {
     type: Date,
     default: Date.now
