@@ -2,7 +2,6 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const DisputesSchema = new Schema({
-  hash: String,
   id: String,
   disputeId: Number,
   arbitratorAddress: String,
@@ -10,14 +9,8 @@ const DisputesSchema = new Schema({
   partyA : String,
   partyB : String,
   title : String,
-  deadline : Number,
-  status : String,
-  fee: Number,
   information : String,
   justification : String,
-  subscribers: [], // jurors can subscribe to notifications for a dispute
-  ruling: Number, // 0 means no decision
-  session: Number, // session that dispute was active
   resolutionOptions: [{
     name: String,
     description: String,
