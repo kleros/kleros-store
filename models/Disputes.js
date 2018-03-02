@@ -18,6 +18,7 @@ const DisputesSchema = new Schema({
   }],
   appealCreatedAt: [],
   appealRuledAt: [],
+  appealDeadlines: [],
   updated_at: {
     type: Date,
     default: Date.now
