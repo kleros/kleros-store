@@ -9,9 +9,6 @@ const DisputesSchema = new Schema({
   partyA : String,
   partyB : String,
   title : String,
-  deadline : Number,
-  status : String,
-  fee: Number,
   information : String,
   justification : String,
   resolutionOptions: [{
