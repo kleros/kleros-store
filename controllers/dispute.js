@@ -8,13 +8,10 @@ exports.updateDisputeProfile = async (req, res) => {
   const bodyContract = req.body
 
   const dispute = await getDisputeDb(arbitratorAddress, disputeId)
-  // don't want to lose our subscribers on update
-  let subscribers = []
-  if (dispute) subscribers = dispute.subscribers
+
   // update db with body
   const newDispute = await updateDisputeDb(new Dispute({
-    ...bodyContract,
-    subscribers
+    ...bodyContract
   }))
   return res.status(201).json(newDispute)
 }
@@ -25,18 +22,6 @@ exports.getDispute = async (req, res) => {
 
   const dispute = await getDisputeDb(arbitratorAddress, disputeId)
   return res.json(dispute)
-}
-
-exports.addSubscriber = async (req, res) => {
-  const disputeId = req.params.disputeId
-  const arbitratorAddress = req.params.arbitratorAddress
-  const address = req.body.address
-
-  const dispute = await getDisputeDb(arbitratorAddress, disputeId)
-  dispute.subscribers.push(address)
-
-  await updateDisputeDb(dispute)
-  return res.status(201).json(dispute)
 }
 
 const getDisputeDb = (arbitratorAddress, disputeId) => {

@@ -177,9 +177,9 @@ exports.addNotification = async (req, res) => {
   const txHash = req.params.txHash
   const notficationDetails = req.body
   let ProfileInstance = await getProfileDb(address)
-  // if not exists, we create this new user
+
   if (_.isNull(ProfileInstance))
-    throw new Error('Profile does not exist')
+    return res.status(400).json({"message": `Profile ${address} does not exist`})
 
   const indexContract = ProfileInstance.notifications.findIndex(
     notification => {
