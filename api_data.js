@@ -194,38 +194,6 @@ define({ "api": [
     "name": "GetArbitratorsArbitratoraddressDisputesDisputeid"
   },
   {
-    "type": "get",
-    "url": "arbitrators/:arbitratorAddress/disputes/:disputeId",
-    "title": "fetch dispute by arbitrator address and disputeId",
-    "group": "Profile",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "unique",
-            "description": "<p>hash of the dispute</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "examples": [
-        {
-          "title": "Success",
-          "content": "HTTP/1.1 200 OK\n{\n  \"_id\": \"59aca9607879b17103bb1b43\",\n  \"contracts\": [],\n  \"disputes\": [],\n  \"__v\": 0,\n  \"created_at\": \"2017-09-04T01:16:16.726Z\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "version": "0.0.0",
-    "filename": "./routes/index.js",
-    "groupTitle": "Profile",
-    "name": "GetArbitratorsArbitratoraddressDisputesDisputeid"
-  },
-  {
     "type": "post",
     "url": ":address",
     "title": "Add/Update a profile",
