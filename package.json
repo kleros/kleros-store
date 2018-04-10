@@ -7,6 +7,7 @@
     "restart-pm2": "pm2 restart all",
     "test": "NODE_ENV=test SERVER_PORT=6788 jest --forceExit",
     "start": "node bin/www",
+    "devstart": "nodemon bin/www",
     "inspect": "node --inspect bin/www"
   },
   "dependencies": {
@@ -26,6 +27,7 @@
     "jest": "^22.1.2",
     "mongoose": "^4.11.9",
     "morgan": "^1.8.2",
+    "nodemon": "^1.17.3",
     "serve-favicon": "^2.4.5",
     "supertest": "^3.0.0"
   },
