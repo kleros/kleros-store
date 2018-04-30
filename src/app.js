@@ -1,23 +1,22 @@
-const express = require('express'),
-    path = require('path'),
-    favicon = require('serve-favicon'),
-    logger = require('morgan'),
-    cookieParser = require('cookie-parser'),
-    bodyParser = require('body-parser'),
-    morgan = require('morgan'),
-    fs = require('fs'),
-    colors = require('colors'),
-    mongoose = require('mongoose'),
-    ipfilter = require('express-ipfilter').IpFilter,
-    seed = require('./seed')
-    authMiddleware = require('./middleware/auth')
+import express from 'express'
+import path from 'path'
+import favicon from 'serve-favicon'
+import logger from 'morgan'
+import cookieParser from 'cookie-parser'
+import bodyParser from 'body-parser'
+import morgan from 'morgan'
+import fs from 'fs'
+import colors from 'colors'
+import mongoose from 'mongoose'
+import { ipfilter } from 'express-ipfilter'
 
-const index = require('./routes/index')
+import seed from './seed'
+import authMiddleware from './middleware/auth'
+import config from '../config'
+import routes from './routes'
 
 // load enviornment variables
 require('dotenv').config()
-
-const config = require('./config')
 
 // Populate DB with sample data
 if (config.seedDb) { seed() }
@@ -30,7 +29,6 @@ mongoose.connect(config.database, { useMongoClient: true })
 
 const app = express()
 
-app.use(authMiddleware)
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -38,6 +36,7 @@ app.use(function(req, res, next) {
   next();
 });
 
+app.use(authMiddleware)
 // Create the server
 //app.use(ipfilter(config.ipsAllowed, {mode: 'allow'}))
 
@@ -63,7 +62,7 @@ app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
 // public routes
-app.use('/', index)
+app.use('/', routes)
 
 app.use('/apidoc', express.static('apidoc'));
 

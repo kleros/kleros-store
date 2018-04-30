@@ -3,3 +3,4 @@ access.log
 yarn-error.log
 .env
 public/apidoc/*
+build

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 const Schema = mongoose.Schema
 
 const ProfileSchema = new Schema({
@@ -60,4 +60,4 @@ const ProfileSchema = new Schema({
   usePushEach: true
 })
 
-module.exports = mongoose.model('profiles', ProfileSchema)
+export default mongoose.model('profiles', ProfileSchema)
