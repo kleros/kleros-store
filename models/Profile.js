@@ -6,6 +6,7 @@ const ProfileSchema = new Schema({
     type: String,
     index: true
   },
+  authToken: String, // hex of the expiration date of the token
   session: Number,
   lastBlock: Number,
   contracts : [{

@@ -253,4 +253,18 @@ router.get(
   ArbitratorsHandlers.getArbitrator
 )
 
+/**
+ * @api {get} :address/authToken Fetch a new auth token for the user.
+ * Users must sign token using private key cooresponding to user profile and
+ * include as an Authorization header in POST and PUT requests.
+ *
+ * @apiGroup Profile
+ *
+ * @apiSuccessExample {json} Success
+ *   HTTP/1.1 200 OK
+ *   {
+ *     unsignedToken: '0x133b5b851cc62de33a02c928f6ac112cd42d1d83'
+ *   }
+ */
+
 module.exports = router
