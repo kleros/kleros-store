@@ -10,6 +10,7 @@ const express = require('express'),
     mongoose = require('mongoose'),
     ipfilter = require('express-ipfilter').IpFilter,
     seed = require('./seed')
+    authMiddleware = require('./middleware/auth')
 
 const index = require('./routes/index')
 
@@ -28,6 +29,8 @@ mongoose.connect(config.database, { useMongoClient: true })
   .catch(err => console.error(err))
 
 const app = express()
+
+app.use(authMiddleware)
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");

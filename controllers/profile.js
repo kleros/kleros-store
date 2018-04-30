@@ -3,6 +3,7 @@ const Profile = require('../models/Profile'),
       { getDisputeDb } = require('./dispute'),
       constants = require('../constants'),
       getFakeData = require('./fake-data')
+const authUtils = require('../util/auth')
 
 
 exports.updateProfile = async (req, res) => {
@@ -201,7 +202,19 @@ exports.addNotification = async (req, res) => {
   }
 }
 
-const getProfileDb = address => {
+exports.requestNewToken = async (req, res) => {
+  const address = req.params.address
+
+  // Fetch a token that will be valid until config.authTokenLengthSeconds or when a new token is requested
+  const unsignedToken = authUtils.getTimestampedToken()
+  const ProfileInstance = await getProfileDb(address)
+  ProfileInstance.authToken = newToken
+  await updateProfileDb(ProfileInstance)
+
+  return res.status(200).json({unsignedToken})
+}
+
+export const getProfileDb = address => {
   return new Promise((resolve, reject) => {
     Profile
       .findOne({address})
@@ -216,7 +229,7 @@ const getProfileDb = address => {
   })
 }
 
-const updateProfileDb = Profile => {
+export const updateProfileDb = Profile => {
   return new Promise((resolve, reject) => {
     Profile.save((err, newProfile) => {
       if (err) {
