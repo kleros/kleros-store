@@ -36,7 +36,7 @@ In order to use POST or PUT http verb a user must:
 
 In order to get a token to sign call the auth endpoint:
 ```
-curl -X GET https://kleros.in/auth
+curl -X GET https://kleros.in/authToken
 ```
 
 This will return a hex string that you should sign with your cryptographic keys. Each token includes a timestamp that tells the server when the token will expire and is signed by the server. Once signed by the user this key can be used to make requests for the users profile until the token expires or a new token is requested by the user.

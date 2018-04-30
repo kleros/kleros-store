@@ -3,10 +3,11 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "pm2 start bin/www --name kleros-store",
+    "build": "babel src -d build",
+    "start": "NODE_ENV=production pm2 start build/index.js --name kleros-store",
     "restart": "pm2 restart all",
     "test": "NODE_ENV=test SERVER_PORT=6788 jest --forceExit",
-    "start:dev": "nodemon bin/www",
+    "start:dev": "NODE_ENV=development nodemon src/bin/www --exec babel-node",
     "inspect": "node --inspect bin/www"
   },
   "dependencies": {
@@ -46,6 +47,9 @@
   },
   "devDependencies": {
     "mongoose-seed": "^0.4.1",
-    "standard": "^10.0.3"
+    "standard": "^10.0.3",
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1"
   }
 }
