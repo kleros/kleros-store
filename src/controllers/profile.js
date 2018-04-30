@@ -1,12 +1,12 @@
-const _ = require('lodash')
-const Profile = require('../models/Profile'),
-      { getDisputeDb } = require('./dispute'),
-      constants = require('../constants'),
-      getFakeData = require('./fake-data')
-const authUtils = require('../util/auth')
+import _ from 'lodash'
+import Profile from '../models/Profile'
+import { getDisputeDb } from './dispute'
+import constants from '../constants'
+import getFakeData from './fake-data'
+import { getTimestampedToken } from '../util/auth'
 
 
-exports.updateProfile = async (req, res) => {
+export const updateProfile = async (req, res) => {
   const address = req.params.address
 
   const newProfileInstance = new Profile(
@@ -27,7 +27,7 @@ exports.updateProfile = async (req, res) => {
   })
 }
 
-exports.updateContractProfile = async (req, res) => {
+export const updateContractProfile = async (req, res) => {
   const address = req.params.address
   const contractAddress = req.params.contractAddress
   const bodyContract = req.body
@@ -87,7 +87,7 @@ exports.updateContractProfile = async (req, res) => {
   ])
 }
 
-exports.addEvidenceContractProfile = async (req, res) => {
+export const addEvidenceContractProfile = async (req, res) => {
   const address = req.params.address
   const contractAddress = req.params.contractAddress
   const evidenceContract = req.body
@@ -112,7 +112,7 @@ exports.addEvidenceContractProfile = async (req, res) => {
   return res.json(NewProfile)
 }
 
-exports.updateDisputesProfile = async (req, res) => {
+export const updateDisputesProfile = async (req, res) => {
   const address = req.params.address
   const disputeId = parseInt(req.params.disputeId)
   const arbitratorAddress = req.params.arbitratorAddress
@@ -136,7 +136,7 @@ exports.updateDisputesProfile = async (req, res) => {
   return res.json(NewProfile)
 }
 
-exports.getProfileByAddress = async (req, res) => {
+export const getProfileByAddress = async (req, res) => {
   try {
     const ProfileInstance = await getProfileDb(req.params.address)
     res.json(ProfileInstance)
@@ -145,7 +145,7 @@ exports.getProfileByAddress = async (req, res) => {
   }
 }
 
-exports.addFakeProfiles = async (req, res) => {
+export const addFakeProfiles = async (req, res) => {
   const profileInstances = [],
         profilePromises = []
 
@@ -173,7 +173,7 @@ exports.addFakeProfiles = async (req, res) => {
   return res.json(profileInstances)
 }
 
-exports.addNotification = async (req, res) => {
+export const addNotification = async (req, res) => {
   const address = req.params.address
   const txHash = req.params.txHash
   const notficationDetails = req.body
@@ -202,13 +202,13 @@ exports.addNotification = async (req, res) => {
   }
 }
 
-exports.requestNewToken = async (req, res) => {
+export const requestNewToken = async (req, res) => {
   const address = req.params.address
 
   // Fetch a token that will be valid until config.authTokenLengthSeconds or when a new token is requested
-  const unsignedToken = authUtils.getTimestampedToken()
+  const unsignedToken = getTimestampedToken()
   const ProfileInstance = await getProfileDb(address)
-  ProfileInstance.authToken = newToken
+  ProfileInstance.authToken = unsignedToken
   await updateProfileDb(ProfileInstance)
 
   return res.status(200).json({unsignedToken})

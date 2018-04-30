@@ -1,8 +1,9 @@
-const express = require('express')
+import express from 'express'
+import * as ProfileHandlers from '../controllers/profile'
+import * as DisputeHandlers from '../controllers/dispute'
+import * as ArbitratorsHandlers from '../controllers/arbitrators'
+
 const router = express.Router()
-const ProfileHandlers = require('../controllers/profile')
-const DisputeHandlers = require('../controllers/dispute')
-const ArbitratorsHandlers = require('../controllers/arbitrators')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -266,5 +267,9 @@ router.get(
  *     unsignedToken: '0x133b5b851cc62de33a02c928f6ac112cd42d1d83'
  *   }
  */
+ router.get(
+   '/:address/authToken',
+   ProfileHandlers.requestNewToken
+ )
 
-module.exports = router
+export default router

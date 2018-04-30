@@ -1,5 +1,5 @@
 const seeder = require('mongoose-seed')
-const config = require('./config')
+const config = require('../config')
 const getFakeData = require('./controllers/fake-data')
 
 const data = [

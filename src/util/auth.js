@@ -1,12 +1,12 @@
-const ethUtil = require('ethjs-util')
+import ethUtil from 'ethjs-util'
 
-const config = require('../config')
+import config from '../../config'
 
 /**
  * Get a new timestamped auth token for a user to sign. Token includes the version and the expiration date.
  * @returns {string} Hex string of the token object
  */
-exports.getTimestampedToken = () => {
+export const getTimestampedToken = () => {
   // expiration date is stored as epoch timestamp in milliseconds
   const expiration = new Date().valueOf() + (1000 * config.authTokenLengthSeconds)
 
@@ -21,7 +21,7 @@ exports.getTimestampedToken = () => {
  * @param {string} unsignedToken - The unsigned user token stored in the db.
  * @returns {bool} True if the token is valid.
  */
-exports.isTokenValid = (unsignedToken) => {
+export const isTokenValid = (unsignedToken) => {
   const unsignedTokenData = JSON.parse(ethUtil.toAscii(unsignedToken))
 
   // token is valid if we are using the same version of token and the expiration date is in the future
