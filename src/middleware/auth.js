@@ -1,7 +1,7 @@
-const sigUtil = require('eth-sig-util')
+import sigUtil from 'eth-sig-util'
 
-const authUtils = require('../util/auth')
-const getProfileDb = require('../controllers/profile').getProfileDb
+import authUtils from '../util/auth'
+import { getProfileDb } from '../controllers/profile'
 
 const authWriteRequests = async (req, res, next) => {
   // We can skip auth if not in production
@@ -26,9 +26,9 @@ const authWriteRequests = async (req, res, next) => {
       }
 
       // pass pre signed message and signature to get signer address
-      msgParams = {
-        'data': userProfile.authToken,
-        'sig': signedToken
+      const msgParams = {
+        data: userProfile.authToken,
+        sig: signedToken
       }
       const authorizedUser = sigUtil.recoverPersonalSignature(msgParams)
 
