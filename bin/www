@@ -4,32 +4,22 @@
  * Module dependencies.
  */
 
-var app = require('../app');
+var app = require('../src/app');
 var debug = require('debug')('backend:server');
 var http = require('http');
-var fs = require('fs');
-const https = require('https');
-
-const constants = require('../constants');
-
-var options = {
-    cert: fs.readFileSync(constants.tls.FULLCHAIN_PEM_PRODUCTION),
-    key: fs.readFileSync(constants.tls.PRIVKEY_PEM_PRODUCTION)
-};
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '443');
+var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 /**
  * Create HTTP server.
  */
 
-//server = http.createServer(app);
-var server = https.createServer(options, app);
+var server = http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
