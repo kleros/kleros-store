@@ -4,9 +4,19 @@
  * Module dependencies.
  */
 
-var app = require('../app');
+require("babel-polyfill");
+var app = require('../build/app');
 var debug = require('debug')('backend:server');
 var http = require('http');
+var fs = require('fs');
+const https = require('https');
+
+const constants = require('../src/constants');
+
+var options = {
+    cert: fs.readFileSync(constants.tls.FULLCHAIN_PEM_PRODUCTION),
+    key: fs.readFileSync(constants.tls.PRIVKEY_PEM_PRODUCTION)
+};
 
 /**
  * Get port from environment and store in Express.
@@ -19,7 +29,8 @@ app.set('port', port);
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+//server = http.createServer(app);
+var server = https.createServer(options, app);
 
 /**
  * Listen on provided port, on all network interfaces.
