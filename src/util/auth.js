@@ -30,3 +30,13 @@ export const isTokenValid = (unsignedToken) => {
     tokenData.expiration > new Date().valueOf()
   )
 }
+
+export const isSigValid = (signedToken, unsignedToken, address) => {
+  const msgParams = {
+    data: unsignedToken,
+    sig: signedToken
+  }
+  const authorizedUser = sigUtil.recoverPersonalSignature(msgParams)
+
+  return (address === authorizedUser)
+}

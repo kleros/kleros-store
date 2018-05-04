@@ -26,14 +26,13 @@ const authWriteRequests = async (req, res, next) => {
       }
 
       // pass pre signed message and signature to get signer address
-      const msgParams = {
-        data: userProfile.authToken,
-        sig: signedToken
-      }
-      const authorizedUser = sigUtil.recoverPersonalSignature(msgParams)
-
-      if (!address === authorizedUser) {
-        res.status(401).send({ error: 'Not authorized to write to resource.' })
+      const validSig = authUtils.isSigValid(signedToken, userProfile.authToken, address)
+      if (!validSig) {
+        res.status(401).send(
+          {
+            error: 'Auth Token signature is invalid.'
+          }
+        )
         return
       }
     }

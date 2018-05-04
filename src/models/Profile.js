@@ -30,8 +30,18 @@ const ProfileSchema = new Schema({
   disputes : [{
     disputeId: Number, // joint key
     arbitratorAddress: String, // joint key
-    appealDraws: [],
-    netPNK: Number
+    contractAddress: String,
+    partyA : String,
+    partyB : String,
+    appealCreatedAt: [],
+    appealRuledAt: [],
+    appealDeadlines: [],
+    updated_at: {
+      type: Date,
+      default: Date.now
+    },
+    appealDraws: [], // juror
+    netPNK: Number // juror
   }],
   notifications: [{
     txHash: {
