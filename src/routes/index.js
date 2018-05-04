@@ -1,7 +1,5 @@
 import express from 'express'
 import * as ProfileHandlers from '../controllers/profile'
-import * as DisputeHandlers from '../controllers/dispute'
-import * as ArbitratorsHandlers from '../controllers/arbitrators'
 
 const router = express.Router()
 
@@ -160,98 +158,6 @@ router.post(
 router.post(
   '/:address/arbitrators/:arbitratorAddress/disputes/:disputeId',
   ProfileHandlers.updateDisputesProfile
-)
-
-/**
- * @api {post} arbitrators/:arbitratorAddress/disputes/:disputeId Add/Update a dispute
- *
- * @apiGroup Dispute
- *
- * @apiParam {String} unique hash of the dispute
- *
- *
- * @apiSuccessExample {json} Success
- *   HTTP/1.1 200 OK
- *   {
- *     "_id": "59aca9607879b17103bb1b43",
- *     "contracts": [],
- *     "disputes": [],
- *     "__v": 0,
- *     "created_at": "2017-09-04T01:16:16.726Z"
- *   }
- */
-router.post(
-  '/arbitrators/:arbitratorAddress/disputes/:disputeId',
-  DisputeHandlers.updateDisputeProfile
-)
-
-/**
- * @api {get} arbitrators/:arbitratorAddress/disputes/:disputeId fetch dispute by arbitrator address and disputeId
- *
- * @apiGroup Profile
- *
- * @apiParam {String} unique hash of the dispute
- *
- *
- * @apiSuccessExample {json} Success
- *   HTTP/1.1 200 OK
- *   {
- *     "_id": "59aca9607879b17103bb1b43",
- *     "contracts": [],
- *     "disputes": [],
- *     "__v": 0,
- *     "created_at": "2017-09-04T01:16:16.726Z"
- *   }
- */
-router.get(
-  '/arbitrators/:arbitratorAddress/disputes/:disputeId',
-  DisputeHandlers.getDispute
-)
-
-/**
- * @api {post} arbitrators/:arbitratorAddress Add/Update a arbitrator
- *
- * @apiGroup Arbitrator
- *
- * @apiParam {String} address of arbitrator
- *
- *
- * @apiSuccessExample {json} Success
- *   HTTP/1.1 200 OK
- *   {
- *     "_id": "59aca9607879b17103bb1b43",
- *     "address": '0x133b5b851cc62de33a02c928f6ac112cd42d1d83',
- *     "lastBlock": 5235,
- *     "__v": 0,
- *     "created_at": "2017-09-04T01:16:16.726Z"
- *   }
- */
-router.post(
-  '/arbitrators/:arbitratorAddress',
-  ArbitratorsHandlers.updateArbitrator
-)
-
-/**
- * @api {get} arbitrators/:arbitratorAddress fetch arbitrator with last block data
- *
- * @apiGroup Arbitrator
- *
- * @apiParam {String} address of arbitrator contract
- *
- *
- * @apiSuccessExample {json} Success
- *   HTTP/1.1 200 OK
- *   {
- *     "_id": "59aca9607879b17103bb1b43",
- *     "address": '0x133b5b851cc62de33a02c928f6ac112cd42d1d83',
- *     "lastBlock": 5235,
- *     "__v": 0,
- *     "created_at": "2017-09-04T01:16:16.726Z"
- *   }
- */
-router.get(
-  '/arbitrators/:arbitratorAddress',
-  ArbitratorsHandlers.getArbitrator
 )
 
 /**
