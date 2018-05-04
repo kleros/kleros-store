@@ -7,7 +7,7 @@
     "start:prod": "yarn run build && NODE_ENV=production pm2 start bin/www.prod --name kleros-store",
     "restart": "pm2 restart all",
     "test": "NODE_ENV=test SERVER_PORT=6788 jest --forceExit",
-    "start:dev": "NODE_ENV=production nodemon bin/www --exec babel-node",
+    "start:dev": "NODE_ENV=development nodemon bin/www --exec babel-node",
     "inspect": "node --inspect bin/www"
   },
   "dependencies": {
