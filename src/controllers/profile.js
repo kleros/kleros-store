@@ -1,6 +1,5 @@
 import _ from 'lodash'
 import Profile from '../models/Profile'
-import { getDisputeDb } from './dispute'
 import constants from '../constants'
 import getFakeData from './fake-data'
 import { getTimestampedToken } from '../util/auth'
@@ -207,9 +206,13 @@ export const requestNewToken = async (req, res) => {
 
   // Fetch a token that will be valid until config.authTokenLengthSeconds or when a new token is requested
   const unsignedToken = getTimestampedToken()
-  const ProfileInstance = await getProfileDb(address)
+  let ProfileInstance = await getProfileDb(address)
+  // Create a new user profile if one does not exist
+  if (!ProfileInstance)
+    ProfileInstance = new Profile( { address: address } )
   ProfileInstance.authToken = unsignedToken
-  await updateProfileDb(ProfileInstance)
+  const working = await updateProfileDb(ProfileInstance)
+  console.log(working)
 
   return res.status(200).json({unsignedToken})
 }
@@ -220,10 +223,11 @@ export const getProfileDb = address => {
       .findOne({address})
       .sort('-created_at')
       .exec(
-        (err, Profile) => {
-          if (err)
+        (err, profile) => {
+          if (err) {
             reject(err)
-          resolve(Profile)
+          }
+          resolve(profile)
         }
       )
   })

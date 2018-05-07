@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   tls: {
     FULLCHAIN_PEM_PRODUCTION: '/etc/letsencrypt/live/kleros-store.com/fullchain.pem',
     PRIVKEY_PEM_PRODUCTION: '/etc/letsencrypt/live/kleros-store.com/privkey.pem',
