@@ -1,5 +1,8 @@
 import express from 'express'
+
 import * as ProfileHandlers from '../controllers/profile'
+import authMiddleware from '../middleware/auth'
+
 
 const router = express.Router()
 
@@ -58,6 +61,7 @@ router.get(
  */
 router.post(
   '/:address',
+  authMiddleware,
   ProfileHandlers.updateProfile
 )
 
@@ -83,6 +87,7 @@ router.post(
  */
 router.post(
   "/:address/notifications/:txHash",
+  authMiddleware,
   ProfileHandlers.addNotification
 )
 
@@ -108,6 +113,7 @@ router.post(
  */
 router.post(
   '/:address/contracts/:contractAddress/evidence',
+  authMiddleware,
   ProfileHandlers.addEvidenceContractProfile
 )
 
@@ -133,6 +139,7 @@ router.post(
  */
 router.post(
   '/:address/contracts/:contractAddress',
+  authMiddleware,
   ProfileHandlers.updateContractProfile
 )
 
@@ -157,6 +164,7 @@ router.post(
  */
 router.post(
   '/:address/arbitrators/:arbitratorAddress/disputes/:disputeId',
+  authMiddleware,
   ProfileHandlers.updateDisputesProfile
 )
 
