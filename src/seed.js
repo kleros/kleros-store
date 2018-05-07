@@ -12,7 +12,7 @@ const data = [
 function seed() {
   seeder.connect(config.database, { useMongoClient: true }, async () => {
     seeder.loadModels([
-      'models/Profile.js'
+      'src/models/Profile.js'
     ])
 
     await seeder.clearModels(['profiles'], (err) => {

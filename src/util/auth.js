@@ -1,3 +1,4 @@
+import sigUtil from 'eth-sig-util'
 import ethUtil from 'ethjs-util'
 
 import config from '../../config'
@@ -26,8 +27,8 @@ export const isTokenValid = (unsignedToken) => {
 
   // token is valid if we are using the same version of token and the expiration date is in the future
   return (
-    tokenData.version === config.authTokenVersion &&
-    tokenData.expiration > new Date().valueOf()
+    unsignedTokenData.version === config.authTokenVersion &&
+    unsignedTokenData.expiration > new Date().valueOf()
   )
 }
 
