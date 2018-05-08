@@ -173,7 +173,7 @@ router.post(
  * Users must sign token using private key cooresponding to user profile and
  * include as an Authorization header in POST and PUT requests.
  *
- * @apiGroup Profile
+ * @apiGroup Auth
  *
  * @apiSuccessExample {json} Success
  *   HTTP/1.1 200 OK
@@ -184,6 +184,23 @@ router.post(
  router.get(
    '/:address/authToken',
    ProfileHandlers.requestNewToken
+ )
+
+ /**
+  * @api {post} :/address/authToken/verify Check to see if an auth token is valid.
+  * Returns 201 if token is valid. Will throw 401 otherwise. Include token as
+  * an Authorization header.
+  *
+  * @apiGroup Auth
+  *
+  * @apiSuccessExample {json} Success
+  * HTTP/1.1 201 OK
+  * {}
+  */
+ router.post(
+   '/:address/authToken/verify',
+   authMiddleware,
+   (req, res) => res.status(201).json({})
  )
 
 export default router
