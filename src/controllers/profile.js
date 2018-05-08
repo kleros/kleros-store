@@ -79,8 +79,7 @@ export const updateContractProfile = async (req, res) => {
     updateProfileDb(SecondProfileInstance),
   ])
 
-  res.status = 201
-  return res.json([
+  return res.status(201).json([
     NewProfile,
     NewSecondProfile
   ])
@@ -212,7 +211,6 @@ export const requestNewToken = async (req, res) => {
     ProfileInstance = new Profile( { address: address } )
   ProfileInstance.authToken = unsignedToken
   const working = await updateProfileDb(ProfileInstance)
-  console.log(working)
 
   return res.status(200).json({unsignedToken})
 }
