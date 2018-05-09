@@ -36,10 +36,10 @@ In order to use POST or PUT http verb a user must:
 
 In order to get a token to sign call the auth endpoint:
 ```
-curl -X GET https://kleros.in/authToken
+curl -X GET https://kleros.in/<ADDRESS>/authToken
 ```
 
-This will return a hex string that you should sign with your cryptographic keys. Each token includes a timestamp that tells the server when the token will expire and is signed by the server. Once signed by the user this key can be used to make requests for the users profile until the token expires or a new token is requested by the user.
+This will return a hex string that you should sign with your cryptographic keys. Each token includes a timestamp that tells the server when the token will expire. Once signed by the user this key can be used to make requests for the users profile until the token expires or a new token is requested by the user.
 
 E.g.
 updating a user profile with the signed token:
@@ -50,16 +50,21 @@ curl -X POST -H "Accept: application/json" -H "Authorization: <SIGNED_TOKEN>" -d
 
 ### Development
 
-#### Install dependancies
+#### Quickstart
 
+- Install dependancies:
 ```
 yarn
 ```
 
-Run with
-
+- Start Mongo:
 ```
-yarn start
+sudo mongod
+```
+
+- Run in developemnt:
+```
+yarn start:dev
 ```
 
 GOTO http://localhost:3000.
@@ -152,12 +157,9 @@ apt install cmdtest
 npm install pm2 -g
 ```
 
-### Configuration
-
-Use production configuration :
+### Build and run in production:
 ```
-mv bin/www.prod bin/www
-pm2 start bin/www # start the server
+yarn start:prod
 ```
 
 ### Redeployment
