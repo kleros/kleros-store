@@ -1,6 +1,5 @@
 import _ from 'lodash'
 import Profile from '../models/Profile'
-import constants from '../constants'
 import getFakeData from './fake-data'
 import { getTimestampedToken } from '../util/auth'
 

@@ -47,7 +47,6 @@ updating a user profile with the signed token:
 curl -X POST -H "Accept: application/json" -H "Authorization: <SIGNED_TOKEN>" -d "<JSON>" https://kleros.in/<ADDRESS>
 ```
 
-
 ### Development
 
 #### Quickstart
