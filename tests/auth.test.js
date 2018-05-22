@@ -2,6 +2,7 @@ import request from 'supertest'
 import { ec } from 'elliptic'
 import { keccak256 } from 'js-sha3'
 
+import seed from '../src/seed'
 import authMiddleware from '../src/middleware/auth'
 import app from '../src/app'
 
@@ -13,6 +14,7 @@ describe('Authentication', () => {
 
   beforeAll(async () => {
     process.env.NODE_ENV = 'production'
+    await seed()
     // generate keypair for signing token
     const EC = new ec('secp256k1')
     keypair = EC.keyFromPrivate(fakePrivate)

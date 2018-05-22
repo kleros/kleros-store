@@ -2,10 +2,21 @@ import express from 'express'
 import path from 'path'
 import logger from 'morgan'
 import bodyParser from 'body-parser'
+import mongoose from 'mongoose'
 
 import routes from './routes'
+import seed from './seed'
 
 import config from '../config'
+
+mongoose.Promise = require('bluebird')
+
+mongoose.connect(config.database, { useMongoClient: true })
+  .then(() => console.log('Connected to UV database'))
+  .catch(err => console.error(err))
+
+// Populate DB with sample data
+if (config.seedDb) { seed() }
 
 const app = express()
 app.disable('x-powered-by')
@@ -53,4 +64,4 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
     })
 })
 
-export default app
+module.exports = app

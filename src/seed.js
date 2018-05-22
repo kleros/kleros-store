@@ -9,20 +9,25 @@ const data = [
   }
 ]
 
-function seed() {
-  seeder.connect(config.database, { useMongoClient: true }, async () => {
-    seeder.loadModels([
-      'src/models/Profile.js'
-    ])
+const seed = () =>
+  new Promise((resolve, reject) =>
+    seeder.connect(config.database, { useMongoClient: true }, async () => {
+      seeder.loadModels([
+        'src/models/Profile.js'
+      ])
 
-    await seeder.clearModels(['profiles'], (err) => {
-      if (err) { console.error(err) }
+      await seeder.clearModels(['profiles'], (err) => {
+        if (err) { console.error(err) }
+        reject(err)
+      })
+
+      await seeder.populateModels(data, (err) => {
+        if (err) { console.error(err) }
+        reject(err)
+      })
+
+      resolve()
     })
-
-    await seeder.populateModels(data, (err) => {
-      if (err) { console.error(err) }
-    });
-  })
-}
+  )
 
 module.exports = seed

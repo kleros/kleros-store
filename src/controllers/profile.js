@@ -136,7 +136,7 @@ export const updateDisputesProfile = async (req, res) => {
 export const getProfileByAddress = async (req, res) => {
   try {
     const ProfileInstance = await getProfileDb(req.params.address)
-    res.json(ProfileInstance)
+    res.status(200).json(ProfileInstance)
   } catch (e) {
     res.send(e)
   }
