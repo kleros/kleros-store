@@ -1,4 +1,4 @@
 module.exports = {
-  seedDb: true,
+  seedDb: false,
   database: 'mongodb://localhost/kleros-test',
 };
