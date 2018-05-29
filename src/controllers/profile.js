@@ -71,7 +71,7 @@ export const updateContractProfile = async (req, res) => {
     )
 
   // address must be one of partyA or partyB
-  if (address !== bodyContract.partyA || address !== bodyContract.partyB) {
+  if (address !== bodyContract.partyA && address !== bodyContract.partyB) {
     return res.status(403).json(
       { message: "Cannot update contract profile for user that is not a counterparty" }
     )
@@ -107,6 +107,8 @@ export const updateContractProfile = async (req, res) => {
       // add the new contract
       _profileInstance.contracts.push(bodyContract)
     }
+
+    return _profileInstance
   }
 
   ProfileInstance = _updateContractProfileInstance(ProfileInstance)
@@ -151,7 +153,7 @@ export const addEvidenceContractProfile = async (req, res) => {
 
   // if not exists, we create this new user
   if (_.isNull(ProfileInstance))
-  return res.status(401).json(
+  return res.status(400).json(
     { message: "User profile does not exist" }
   )
 
@@ -160,11 +162,11 @@ export const addEvidenceContractProfile = async (req, res) => {
   )
 
   if (indexContract < 0)
-    return res.status(401).json(
+    return res.status(400).json(
       { message: "Contract does not exist in User Profile" }
     )
 
-  await ProfileInstance.contracts[indexContract].evidences.push(evidenceContract)
+  await ProfileInstance.contracts[indexContract].evidence.push(evidenceContract)
 
   const NewProfile = await saveProfileDb(ProfileInstance)
 

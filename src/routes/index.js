@@ -118,31 +118,6 @@ router.post(
 )
 
 /**
- * @api {post} :address/contracts/:contractAddress/evidence Add an evidence in the contract
- *
- * @apiGroup Profile
- *
- * @apiParam {String} address Ethereum address of the user
- * @apiParam {String} address Ethereum address of the contract
- *
- *
- * @apiSuccessExample {json} Success
- *   HTTP/1.1 200 OK
- *   {
- *     "_id": "59aca9607879b17103bb1b43",
- *     "contracts": [],
- *     "disputes": [],
- *     "notifications": [],
- *     "__v": 0,
- *     "created_at": "2017-09-04T01:16:16.726Z"
- *   }
- */
-router.post(
-  '/:address/contracts/:contractAddress/evidence',
-  ProfileHandlers.addEvidenceContractProfile
-)
-
-/**
  * @api {post} :address/contracts/:contractAddress Add/Update a contract
  *
  * @apiGroup Profile
@@ -165,6 +140,31 @@ router.post(
 router.post(
   '/:address/contracts/:contractAddress',
   ProfileHandlers.updateContractProfile
+)
+
+/**
+ * @api {post} :address/contracts/:contractAddress/evidence Add an evidence in the contract
+ *
+ * @apiGroup Profile
+ *
+ * @apiParam {String} address Ethereum address of the user
+ * @apiParam {String} address Ethereum address of the contract
+ *
+ *
+ * @apiSuccessExample {json} Success
+ *   HTTP/1.1 200 OK
+ *   {
+ *     "_id": "59aca9607879b17103bb1b43",
+ *     "contracts": [],
+ *     "disputes": [],
+ *     "notifications": [],
+ *     "__v": 0,
+ *     "created_at": "2017-09-04T01:16:16.726Z"
+ *   }
+ */
+router.post(
+  '/:address/contracts/:contractAddress/evidence',
+  ProfileHandlers.addEvidenceContractProfile
 )
 
 /**
