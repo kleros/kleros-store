@@ -6,20 +6,12 @@ const ProfileSchema = new Schema({
     type: String,
     index: true
   },
-  authToken: String, // hex of the expiration date of the token
-  session: Number,
   lastBlock: Number,
   contracts : [{
     address: String,
-    hash : String,
-    partyA : String,
-    partyB : String,
-    arbitrator: String,
-    timeout: Number,
     email: String,
     description: String,
     title: String,
-    disputeId: Number,
     evidences: [{
       name: String,
       description: String,
@@ -30,18 +22,11 @@ const ProfileSchema = new Schema({
   disputes : [{
     disputeId: Number, // joint key
     arbitratorAddress: String, // joint key
-    contractAddress: String,
-    partyA : String,
-    partyB : String,
-    appealCreatedAt: [],
-    appealRuledAt: [],
-    appealDeadlines: [],
     updated_at: {
       type: Date,
       default: Date.now
     },
     appealDraws: [], // juror
-    netPNK: Number // juror
   }],
   notifications: [{
     txHash: {
