@@ -43,6 +43,53 @@ describe('Contracts', () => {
     expect(partyBProfile.contracts[0].description).toEqual(contractBody.description)
     expect(partyBProfile.contracts[0].title).toEqual(contractBody.title)
   }),
+  test('cannot overwrite contract data', async () => {
+    // use a new address for each user profile
+    const testAddressPartyA = '0x0' + Math.random()
+    const testAddressPartyB = '0x0' + Math.random()
+
+    const contractAddress = '0x0'
+    const contractBody = {
+      partyA: testAddressPartyA,
+      partyB: testAddressPartyB,
+      description: 'test description',
+      title: 'test title'
+    }
+
+    // create user profile
+    let response = await request(app)
+      .post(`/${testAddressPartyA}/contracts/${contractAddress}`)
+      .send(contractBody)
+
+    expect(response.statusCode).toBe(201)
+
+    const updatedContractData = {
+      partyA: testAddressPartyA,
+      partyB: testAddressPartyB,
+      email: 'new@email.com',
+      description: 'new description',
+      title: 'new title'
+    }
+
+    response = await request(app)
+      .post(`/${testAddressPartyA}/contracts/${contractAddress}`)
+      .send(updatedContractData)
+
+    expect(response.statusCode).toBe(201)
+    expect(response.body.length).toEqual(2)
+    const partyAProfile = response.body[0]
+    expect(partyAProfile.address).toEqual(testAddressPartyA)
+    expect(partyAProfile.contracts.length).toEqual(1)
+    expect(partyAProfile.contracts[0].email).toEqual(updatedContractData.email)
+    expect(partyAProfile.contracts[0].description).toEqual(contractBody.description)
+    expect(partyAProfile.contracts[0].title).toEqual(contractBody.title)
+    const partyBProfile = response.body[1]
+    expect(partyBProfile.address).toEqual(testAddressPartyB)
+    expect(partyBProfile.contracts.length).toEqual(1)
+    expect(partyBProfile.contracts[0].email).toEqual(updatedContractData.email)
+    expect(partyBProfile.contracts[0].description).toEqual(contractBody.description)
+    expect(partyBProfile.contracts[0].title).toEqual(contractBody.title)
+  }),
   test('new contract no partyA or partyB', async () => {
     // use a new address for each user profile
     const testAddressPartyA = '0x0' + Math.random()
@@ -166,7 +213,7 @@ describe('Contracts', () => {
     await request(app)
       .post(`/${testAddressPartyA}`)
       .send()
-      
+
     const contractAddress = '0x0'
     const evidenceParams = {
       name: 'testEvidence',
