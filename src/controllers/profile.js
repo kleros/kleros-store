@@ -51,7 +51,7 @@ export const updateLastBlock = async (req, res) => {
 
   ProfileInstance.lastBlock = newLastBlock
 
-  const NewProfile = await updateProfileDb(ProfileInstance)
+  const NewProfile = await saveProfileDb(ProfileInstance)
 
   return res.status(201).json(NewProfile)
 }
@@ -129,8 +129,8 @@ export const updateContractProfile = async (req, res) => {
   SecondProfileInstance = _updateContractProfileInstance(SecondProfileInstance)
 
   const [NewProfile, NewSecondProfile] = await Promise.all([
-    updateProfileDb(ProfileInstance),
-    updateProfileDb(SecondProfileInstance),
+    saveProfileDb(ProfileInstance),
+    saveProfileDb(SecondProfileInstance),
   ])
 
   return res.status(201).json([
@@ -166,7 +166,7 @@ export const addEvidenceContractProfile = async (req, res) => {
 
   await ProfileInstance.contracts[indexContract].evidences.push(evidenceContract)
 
-  const NewProfile = await updateProfileDb(ProfileInstance)
+  const NewProfile = await saveProfileDb(ProfileInstance)
 
   return res.status(201).json(NewProfile)
 }
@@ -202,7 +202,7 @@ export const updateDisputesProfile = async (req, res) => {
     )
   }
 
-  const NewProfile = await updateProfileDb(ProfileInstance)
+  const NewProfile = await saveProfileDb(ProfileInstance)
 
   return res.status(201).json(NewProfile)
 }
@@ -224,21 +224,22 @@ export const addNewDrawsDisputeProfile = async (req, res) => {
     })
 
   // required params
-  if (!req.body.draws || !req.body.appeal)
+  if (typeof req.body.draws === 'undefined' || typeof req.body.appeal === 'undefined')
     return res.status(400).json({
       message: "Missing required param. Required params: appeal <int>, draws <int>[]"
     })
 
   // draws already exist for appeal
-  if (ProfileInstance.disputes[disputeId].appealDraws[req.body.appeal])
+  if (!(typeof ProfileInstance.disputes[disputeId].appealDraws[req.body.appeal] === 'undefined'))
     return res.status(403).json({
       message: "Draws already stored for appeal"
     })
 
   // update user profile
   ProfileInstance.disputes[disputeId].appealDraws[req.body.appeal] = req.body.draws
+  ProfileInstance.markModified('disputes')
 
-  const NewProfile = await updateProfileDb(ProfileInstance)
+  const NewProfile = await saveProfileDb(ProfileInstance)
   return res.status(201).json(NewProfile)
 }
 
@@ -301,7 +302,7 @@ export const addNotification = async (req, res) => {
       ...notficationDetails
     }
     ProfileInstance.notifications.push(newNotification)
-    const NewProfile = await updateProfileDb(ProfileInstance)
+    const NewProfile = await saveProfileDb(ProfileInstance)
     return res.status(201).json(NewProfile)
   } else {
     return res.status(304).json(ProfileInstance)
@@ -324,7 +325,7 @@ export const getProfileDb = address => {
   })
 }
 
-export const updateProfileDb = Profile => {
+export const saveProfileDb = Profile => {
   return new Promise((resolve, reject) => {
     Profile.save((err, newProfile) => {
       if (err) {
