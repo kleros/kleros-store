@@ -12,7 +12,7 @@ const ProfileSchema = new Schema({
     email: String,
     description: String,
     title: String,
-    evidences: [{
+    evidence: [{
       name: String,
       description: String,
       url: String,
