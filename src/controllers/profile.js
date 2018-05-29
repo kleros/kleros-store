@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import Profile from '../models/Profile'
 import getFakeData from './fake-data'
-import { getTimestampedToken } from '../util/auth'
+import { combineObjects } from '../util/combineObjects'
 
 export const newUserProfile = async (req, res) => {
   const address = req.params.address
@@ -90,19 +90,15 @@ export const updateContractProfile = async (req, res) => {
 
   const _updateContractProfileInstance = (_profileInstance) => {
     // see if contract already exists in user profile
-    const contractIndex = _.indexOf(
-      _profileInstance.contracts,
+    const contractIndex = _profileInstance.contracts.findIndex(
       contract =>
         contract.address === contractAddress
     )
     if (contractIndex >= 0) {
       // Add new data but do not overwrite any data previously in contract.
       // NOTE: Nested objects cannot be updated with this method unless they do not exist.
-      _profileInstance.contracts[contractIndex] =
-        {
-          ...bodyContract,
-          ..._profileInstance.contracts[contractIndex].toObject()
-        }
+      const newContract = combineObjects(_profileInstance.contracts[contractIndex].toObject(), bodyContract)
+      _profileInstance.contracts[contractIndex] = newContract
     } else {
       // add the new contract
       _profileInstance.contracts.push(bodyContract)
@@ -130,6 +126,8 @@ export const updateContractProfile = async (req, res) => {
 
   SecondProfileInstance = _updateContractProfileInstance(SecondProfileInstance)
 
+  ProfileInstance.markModified('contracts')
+  SecondProfileInstance.markModified('contracts')
   const [NewProfile, NewSecondProfile] = await Promise.all([
     saveProfileDb(ProfileInstance),
     saveProfileDb(SecondProfileInstance),
@@ -168,6 +166,7 @@ export const addEvidenceContractProfile = async (req, res) => {
 
   await ProfileInstance.contracts[indexContract].evidence.push(evidenceContract)
 
+  ProfileInstance.markModified('contracts')
   const NewProfile = await saveProfileDb(ProfileInstance)
 
   return res.status(201).json(NewProfile)
@@ -191,10 +190,10 @@ export const updateDisputesProfile = async (req, res) => {
 
   if (indexDispute >= 0) {
     const dispute = ProfileInstance.disputes[indexDispute].toObject()
+    const newDispute = combineObjects(dispute, req.body)
     // add new data but do not overwrite anything
     ProfileInstance.disputes[indexDispute] = {
-      ...req.body,
-      ...dispute,
+      ...newDispute,
       arbitratorAddress,
       disputeId,
     }
@@ -204,6 +203,7 @@ export const updateDisputesProfile = async (req, res) => {
     )
   }
 
+  ProfileInstance.markModified('disputes')
   const NewProfile = await saveProfileDb(ProfileInstance)
 
   return res.status(201).json(NewProfile)
