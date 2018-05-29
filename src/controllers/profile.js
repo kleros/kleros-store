@@ -3,14 +3,18 @@ import Profile from '../models/Profile'
 import getFakeData from './fake-data'
 import { getTimestampedToken } from '../util/auth'
 
-
-export const updateProfile = async (req, res) => {
+export const newUserProfile = async (req, res) => {
   const address = req.params.address
+
+  const ProfileInstance = await getProfileDb(address)
+  if (ProfileInstance)
+    return res.status(403).json({
+      message: 'Cannot overwrite existing user profile'
+    })
 
   const newProfileInstance = new Profile(
     {
       address: address,
-      ...req.body
     }
   )
 
@@ -25,6 +29,33 @@ export const updateProfile = async (req, res) => {
   })
 }
 
+export const updateLastBlock = async (req, res) => {
+  const address = req.params.address
+  const newLastBlock = req.body.lastBlock
+
+  if (!newLastBlock)
+  return res.status(400).json(
+    { message: `Required params: lastBlock <int>` }
+  )
+
+  let ProfileInstance = await getProfileDb(address)
+
+  // create new user if no user profile exists
+  if (_.isNull(ProfileInstance)) {
+    ProfileInstance = new Profile(
+      {
+        address: address,
+      }
+    )
+  }
+
+  ProfileInstance.lastBlock = newLastBlock
+
+  const NewProfile = await updateProfileDb(ProfileInstance)
+
+  return res.status(201).json(NewProfile)
+}
+
 export const updateContractProfile = async (req, res) => {
   const address = req.params.address
   const contractAddress = req.params.contractAddress
@@ -33,9 +64,22 @@ export const updateContractProfile = async (req, res) => {
   // force the correct address
   bodyContract.address = req.params.contractAddress
 
+  // check required params
+  if (!bodyContract.partyA || !bodyContract.partyB)
+    return res.status(400).json(
+      { message: `Required params: partyA <address>, partyA <address>` }
+    )
+
+  // address must be one of partyA or partyB
+  if (address !== bodyContract.partyA || address !== bodyContract.partyB) {
+    return res.status(403).json(
+      { message: "Cannot update contract profile for user that is not a counterparty" }
+    )
+  }
+
   let ProfileInstance = await getProfileDb(address)
 
-  // if not exists, we create this new user
+  // create new user if no user profile exists
   if (_.isNull(ProfileInstance)) {
     ProfileInstance = new Profile(
       {
@@ -44,17 +88,28 @@ export const updateContractProfile = async (req, res) => {
     )
   }
 
-  // remove the older contract
-  // FIXME keep partyA and partyB contents
-  let contracts = ProfileInstance.contracts.filter(contract => {
-      return contract.address !== contractAddress
-  })
+  const _updateContractProfileInstance = (_profileInstance) => {
+    // see if contract already exists in user profile
+    const contractIndex = _.indexOf(
+      _profileInstance.contracts,
+      contract =>
+        contract.address === contractAddress
+    )
+    if (contractIndex >= 0) {
+      // Add new data but do not overwrite any data previously in contract.
+      // NOTE: Nested objects cannot be updated with this method unless they do not exist.
+      _profileInstance.contracts[contractIndex] =
+        {
+          ...bodyContract,
+          ..._profileInstance.contracts[contractIndex].toObject()
+        }
+    } else {
+      // add the new contract
+      _profileInstance.contracts.push(bodyContract)
+    }
+  }
 
-  // add the new contract
-  contracts.push(bodyContract)
-
-  // update the contract in the profile (x-www-form-urlencoded)
-  ProfileInstance.contracts = contracts
+  ProfileInstance = _updateContractProfileInstance(ProfileInstance)
 
   const secondAddress = (bodyContract.partyA === address)
     ? bodyContract.partyB
@@ -71,7 +126,7 @@ export const updateContractProfile = async (req, res) => {
     )
   }
 
-  SecondProfileInstance.contracts = contracts
+  SecondProfileInstance = _updateContractProfileInstance(SecondProfileInstance)
 
   const [NewProfile, NewSecondProfile] = await Promise.all([
     updateProfileDb(ProfileInstance),
@@ -96,17 +151,24 @@ export const addEvidenceContractProfile = async (req, res) => {
 
   // if not exists, we create this new user
   if (_.isNull(ProfileInstance))
-    throw new Error('Profile does not exist')
+  return res.status(401).json(
+    { message: "User profile does not exist" }
+  )
 
   const indexContract = ProfileInstance.contracts.findIndex(
     contract => contract.address === contractAddress
   )
 
+  if (indexContract < 0)
+    return res.status(401).json(
+      { message: "Contract does not exist in User Profile" }
+    )
+
   await ProfileInstance.contracts[indexContract].evidences.push(evidenceContract)
 
   const NewProfile = await updateProfileDb(ProfileInstance)
 
-  return res.json(NewProfile)
+  return res.status(201).json(NewProfile)
 }
 
 export const updateDisputesProfile = async (req, res) => {
@@ -115,22 +177,69 @@ export const updateDisputesProfile = async (req, res) => {
   const arbitratorAddress = req.params.arbitratorAddress
 
   const ProfileInstance = await getProfileDb(address)
+  // if not exists, we create this new user
+  if (_.isNull(ProfileInstance))
+  return res.status(401).json(
+    { message: "User profile does not exist" }
+  )
 
-  const indexContract = _.findIndex(ProfileInstance.disputes, dispute =>
+  const indexDispute = _.findIndex(ProfileInstance.disputes, dispute =>
     (dispute.disputeId === disputeId && dispute.arbitratorAddress === arbitratorAddress)
   )
 
-  if (indexContract >= 0) {
-    ProfileInstance.disputes[indexContract] = req.body
+  if (indexDispute >= 0) {
+    const dispute = ProfileInstance.disputes[indexDispute].toObject()
+    // add new data but do not overwrite anything
+    ProfileInstance.disputes[indexDispute] = {
+      ...req.body,
+      ...dispute,
+      arbitratorAddress,
+      disputeId,
+    }
   } else {
     ProfileInstance.disputes.push(
-      req.body
+      { ...req.body, disputeId, arbitratorAddress }
     )
   }
 
   const NewProfile = await updateProfileDb(ProfileInstance)
 
-  return res.json(NewProfile)
+  return res.status(201).json(NewProfile)
+}
+
+export const addNewDrawsDisputeProfile = async (req, res) => {
+  const address = req.params.address
+  const disputeId = parseInt(req.params.disputeId)
+  const arbitratorAddress = req.params.arbitratorAddress
+
+  const ProfileInstance = await getProfileDb(address)
+
+  const indexDispute = _.findIndex(ProfileInstance.disputes, dispute =>
+    (dispute.disputeId === disputeId && dispute.arbitratorAddress === arbitratorAddress)
+  )
+
+  if (indexDispute < 0)
+    return res.status(400).json({
+      message: "Dispute not found in user profile"
+    })
+
+  // required params
+  if (!req.body.draws || !req.body.appeal)
+    return res.status(400).json({
+      message: "Missing required param. Required params: appeal <int>, draws <int>[]"
+    })
+
+  // draws already exist for appeal
+  if (ProfileInstance.disputes[disputeId].appealDraws[req.body.appeal])
+    return res.status(403).json({
+      message: "Draws already stored for appeal"
+    })
+
+  // update user profile
+  ProfileInstance.disputes[disputeId].appealDraws[req.body.appeal] = req.body.draws
+
+  const NewProfile = await updateProfileDb(ProfileInstance)
+  return res.status(201).json(NewProfile)
 }
 
 export const getProfileByAddress = async (req, res) => {
@@ -177,7 +286,7 @@ export const addNotification = async (req, res) => {
   let ProfileInstance = await getProfileDb(address)
 
   if (_.isNull(ProfileInstance))
-    return res.status(400).json({"message": `Profile ${address} does not exist`})
+    return res.status(400).json({message: `Profile ${address} does not exist`})
 
   const indexContract = ProfileInstance.notifications.findIndex(
     notification => {
@@ -197,21 +306,6 @@ export const addNotification = async (req, res) => {
   } else {
     return res.status(304).json(ProfileInstance)
   }
-}
-
-export const requestNewToken = async (req, res) => {
-  const address = req.params.address
-
-  // Fetch a token that will be valid until config.authTokenLengthSeconds or when a new token is requested
-  const unsignedToken = getTimestampedToken()
-  let ProfileInstance = await getProfileDb(address)
-  // Create a new user profile if one does not exist
-  if (!ProfileInstance)
-    ProfileInstance = new Profile( { address: address } )
-  ProfileInstance.authToken = unsignedToken
-  const working = await updateProfileDb(ProfileInstance)
-
-  return res.status(200).json({unsignedToken})
 }
 
 export const getProfileDb = address => {
