@@ -1,8 +1,6 @@
 import express from 'express'
 
 import * as ProfileHandlers from '../controllers/profile'
-import authMiddleware from '../middleware/auth'
-
 
 const router = express.Router()
 
@@ -18,8 +16,8 @@ router.get('/', function(req, res, next) {
  *
  * @apiParam {String} address Ethereum of the user
  *
- * @apiSuccess {Array} contracts Contract user
- * @apiSuccess {Array} disputes Dispute user
+ * @apiSuccess {Object[]} contracts Contract user
+ * @apiSuccess {Object[]} disputes Dispute user
  * @apiSuccess {Date} created_at Create's date document
  *
  * @apiSuccessExample {json} Success
@@ -29,6 +27,7 @@ router.get('/', function(req, res, next) {
  *     "contracts": [],
  *     "disputes": [],
  *     "notifications": [],
+ *     "lastBlock": 0,
  *     "__v": 0,
  *     "created_at": "2017-09-04T01:16:16.726Z"
  *   }
@@ -41,7 +40,8 @@ router.get(
 )
 
 /**
- * @api {post} :address Add/Update a profile
+ * @api {post} :address Add a new profile. Cannot overwrite existing user profiles.
+ * Use other update methods to add new data to profile.
  *
  * @apiGroup Profile
  *
@@ -55,14 +55,41 @@ router.get(
  *     "contracts": [],
  *     "disputes": [],
  *     "notifications": [],
+ *     "lastBlock": 0,
  *     "__v": 0,
  *     "created_at": "2017-09-04T01:16:16.726Z"
  *   }
  */
 router.post(
   '/:address',
-  authMiddleware,
-  ProfileHandlers.updateProfile
+  ProfileHandlers.newUserProfile
+)
+
+/**
+ * @api {post} :address/lastBlock Update last block checked by user profile. lastBlock
+ * is used as an untrusted start point for fetching contract logs.
+ *
+ * @apiGroup Profile
+ *
+ * @apiParam {String} address Ethereum of the user.
+ * @apiParam (body) {Number} lastBlock last block number we have seen.
+ *
+ *
+ * @apiSuccessExample {json} Success
+ *   HTTP/1.1 200 OK
+ *   {
+ *     "_id": "59aca9607879b17103bb1b43",
+ *     "contracts": [],
+ *     "disputes": [],
+ *     "notifications": [],
+ *     "lastBlock": 0,
+ *     "__v": 0,
+ *     "created_at": "2017-09-04T01:16:16.726Z"
+ *   }
+ */
+router.post(
+  '/:address/lastBlock',
+  ProfileHandlers.updateLastBlock
 )
 
 /**
@@ -70,8 +97,8 @@ router.post(
  *
  * @apiGroup Profile
  *
- * @apiParam {String} address Ethereum of the user
- * @apiParam {String} transaction hash of tx that produced event
+ * @apiParam {String} address Ethereum of the user.
+ * @apiParam {String} txHash Transaction hash of tx that produced event.
  *
  *
  * @apiSuccessExample {json} Success
@@ -87,7 +114,6 @@ router.post(
  */
 router.post(
   "/:address/notifications/:txHash",
-  authMiddleware,
   ProfileHandlers.addNotification
 )
 
@@ -113,7 +139,6 @@ router.post(
  */
 router.post(
   '/:address/contracts/:contractAddress/evidence',
-  authMiddleware,
   ProfileHandlers.addEvidenceContractProfile
 )
 
@@ -139,7 +164,6 @@ router.post(
  */
 router.post(
   '/:address/contracts/:contractAddress',
-  authMiddleware,
   ProfileHandlers.updateContractProfile
 )
 
@@ -164,43 +188,34 @@ router.post(
  */
 router.post(
   '/:address/arbitrators/:arbitratorAddress/disputes/:disputeId',
-  authMiddleware,
   ProfileHandlers.updateDisputesProfile
 )
 
 /**
- * @api {get} :address/authToken Fetch a new auth token for the user.
- * Users must sign token using private key cooresponding to user profile and
- * include as an Authorization header in POST and PUT requests.
+ * @api {post} :address/arbitrators/:arbitratorAddress/disputes/:disputeId/draws Add draws to dispute profile
  *
- * @apiGroup Auth
+ * @apiGroup Profile
+ *
+ * @apiParam {String} address Ethereum address of the user
+ * @apiParam {String} arbitratorAddress Ethereum address of the aribtrator
+ * @apiParam {String} disputeId Index of the dispute
+ * @apiParam (body) {Number[]} draws Array of draw numbers
+ * @apiParam (body) {Number} appeal The number of the appeal. First session disputes (no appeal) is 0.
+ *
  *
  * @apiSuccessExample {json} Success
  *   HTTP/1.1 200 OK
  *   {
- *     unsignedToken: '0x133b5b851cc62de33a02c928f6ac112cd42d1d83'
+ *     "_id": "59aca9607879b17103bb1b43",
+ *     "contracts": [],
+ *     "disputes": [],
+ *     "__v": 0,
+ *     "created_at": "2017-09-04T01:16:16.726Z"
  *   }
  */
- router.get(
-   '/:address/authToken',
-   ProfileHandlers.requestNewToken
- )
-
- /**
-  * @api {post} :/address/authToken/verify Check to see if an auth token is valid.
-  * Returns 201 if token is valid. Will throw 401 otherwise. Include token as
-  * an Authorization header.
-  *
-  * @apiGroup Auth
-  *
-  * @apiSuccessExample {json} Success
-  * HTTP/1.1 201 OK
-  * {}
-  */
- router.post(
-   '/:address/authToken/verify',
-   authMiddleware,
-   (req, res) => res.status(201).json({})
- )
+router.post(
+  '/:address/arbitrators/:arbitratorAddress/disputes/:disputeId/draws',
+  ProfileHandlers.addNewDrawsDisputeProfile
+)
 
 export default router
