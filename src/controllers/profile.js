@@ -226,13 +226,13 @@ export const addNewDrawsDisputeProfile = async (req, res) => {
     })
 
   // required params
-  if (typeof req.body.draws === 'undefined' || typeof req.body.appeal === 'undefined')
+  if (req.body.draws === undefined || req.body.appeal === undefined)
     return res.status(400).json({
       message: "Missing required param. Required params: appeal <int>, draws <int>[]"
     })
 
   // draws already exist for appeal
-  if (!(typeof ProfileInstance.disputes[disputeId].appealDraws[req.body.appeal] === 'undefined'))
+  if (ProfileInstance.disputes[disputeId].appealDraws[req.body.appeal] !== undefined)
     return res.status(403).json({
       message: "Draws already stored for appeal"
     })
