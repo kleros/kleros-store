@@ -7,6 +7,7 @@ const ProfileSchema = new Schema({
     index: true
   },
   session: Number,
+  lastBlock: Number,
   contracts : [{
     address: String,
     hash : String,
@@ -16,24 +17,26 @@ const ProfileSchema = new Schema({
     timeout: Number,
     email: String,
     description: String,
+    title: String,
     disputeId: Number,
     evidences: [{
       name: String,
       description: String,
-      url: String
+      url: String,
+      submittedAt: Number
     }]
   }],
   disputes : [{
     disputeId: Number, // joint key
     arbitratorAddress: String, // joint key
-    isJuror: Boolean,
-    hasRuled: Boolean,
-    votes: [Number]
+    appealDraws: [],
+    netPNK: Number
   }],
   notifications: [{
     txHash: {
       type: String,
     }, // uuid for notification
+    logIndex: Number, // isn't enough just to have txHash
     notificationType: Number, // cooresponds to types enum
     read: {
       type: Boolean,

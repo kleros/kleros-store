@@ -3,9 +3,8 @@ const request = require('supertest')
 
 describe('Disputes', () => {
   test('add subscriber to dispute', async () => {
-    const testArbitratorAddress = "0x0"
+    const testArbitratorAddress = "0x0" + Math.random()
     const testDisputeId = 1
-    const testSubscriberAddress = "0x1"
 
     const fakeDispute = {
       disputeId: testDisputeId,
@@ -17,16 +16,6 @@ describe('Disputes', () => {
     ).send(fakeDispute)
     expect(response.statusCode).toBe(201)
     expect(response.body.disputeId).toBe(testDisputeId)
-    expect(response.body.subscribers.length).toBe(0)
-
-    response = await request(app)
-      .post(`/arbitrators/${testArbitratorAddress}/disputes/${testDisputeId}/subscribers`)
-      .send({
-        address: testSubscriberAddress
-      })
-
-    expect(response.statusCode).toBe(201)
-    expect(response.body.subscribers.length).toBe(1)
-    expect(response.body.subscribers[0]).toEqual(testSubscriberAddress)
+    expect(response.body.arbitratorAddress).toBe(testArbitratorAddress)
   })
 })

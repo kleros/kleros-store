@@ -113,13 +113,13 @@ exports.addEvidenceContractProfile = async (req, res) => {
 
 exports.updateDisputesProfile = async (req, res) => {
   const address = req.params.address
-  const disputeId = req.params.disputeId
+  const disputeId = parseInt(req.params.disputeId)
   const arbitratorAddress = req.params.arbitratorAddress
 
   const ProfileInstance = await getProfileDb(address)
 
-  const indexContract = ProfileInstance.disputes.findIndex(
-    dispute => (dispute.disputeId === disputeId && dispute.arbitratorAddress === arbitratorAddress)
+  const indexContract = _.findIndex(ProfileInstance.disputes, dispute =>
+    (dispute.disputeId === disputeId && dispute.arbitratorAddress === arbitratorAddress)
   )
 
   if (indexContract >= 0) {
@@ -177,12 +177,14 @@ exports.addNotification = async (req, res) => {
   const txHash = req.params.txHash
   const notficationDetails = req.body
   let ProfileInstance = await getProfileDb(address)
-  // if not exists, we create this new user
+
   if (_.isNull(ProfileInstance))
-    throw new Error('Profile does not exist')
+    return res.status(400).json({"message": `Profile ${address} does not exist`})
 
   const indexContract = ProfileInstance.notifications.findIndex(
-    notification => (notification.txHash === txHash)
+    notification => {
+      return (notification.txHash === txHash && notification.logIndex === notficationDetails.logIndex)
+    }
   )
 
   // if we have already seen it don't add another
