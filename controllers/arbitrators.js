@@ -1,7 +1,7 @@
 const Arbitrator = require('../models/Arbitrators')
 
 exports.updateArbitrator = async (req, res) => {
-  const arbitratorAddress = req.params.arbitratorAddress
+  const arbitratorAddress = req.params.arbitratorAddress.toLowerCase()
   const body = req.body
 
   const newArbitratorInstance = new Arbitrator(
@@ -23,7 +23,7 @@ exports.updateArbitrator = async (req, res) => {
 }
 
 exports.getArbitrator = async (req, res) => {
-  const arbitratorAddress = req.params.arbitratorAddress
+  const arbitratorAddress = req.params.arbitratorAddress.toLowerCase()
 
   const arbitrator = await getArbitratorDb(arbitratorAddress)
   return res.json(arbitrator)
