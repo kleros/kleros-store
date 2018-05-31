@@ -114,7 +114,7 @@ exports.addEvidenceContractProfile = async (req, res) => {
 exports.updateDisputesProfile = async (req, res) => {
   const address = req.params.address
   const disputeId = parseInt(req.params.disputeId)
-  const arbitratorAddress = req.params.arbitratorAddress
+  const arbitratorAddress = req.params.arbitratorAddress.toLowerCase()
 
   const ProfileInstance = await getProfileDb(address)
 
