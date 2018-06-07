@@ -27,6 +27,7 @@ const ProfileSchema = new Schema({
       default: Date.now
     },
     appealDraws: [], // juror
+    blockNumber: Number
   }],
   notifications: [{
     txHash: {
