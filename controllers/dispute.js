@@ -4,7 +4,7 @@ const Dispute = require('../models/Disputes'),
 
 exports.updateDisputeProfile = async (req, res) => {
   const disputeId = req.params.disputeId
-  const arbitratorAddress = req.params.arbitratorAddress.toLowerCase()
+  const arbitratorAddress = req.params.arbitratorAddress
   const bodyContract = req.body
 
   const dispute = await getDisputeDb(arbitratorAddress, disputeId)
@@ -18,7 +18,7 @@ exports.updateDisputeProfile = async (req, res) => {
 
 exports.getDispute = async (req, res) => {
   const disputeId = req.params.disputeId
-  const arbitratorAddress = req.params.arbitratorAddress.toLowerCase()
+  const arbitratorAddress = req.params.arbitratorAddress
 
   const dispute = await getDisputeDb(arbitratorAddress, disputeId)
   return res.json(dispute)
