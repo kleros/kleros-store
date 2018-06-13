@@ -6,6 +6,8 @@ const defaultConfig = {
     '::1',
     '127.0.0.1',
   ],
+  authTokenLengthSeconds: process.env.AUTH_TOKEN_LENGTH || 604800, // auth tokens by default last a week
+  authTokenVersion: process.env.AUTH_TOKEN_VERSION || 1 // default version 1
 }
 
 // Export the config object based on the NODE_ENV

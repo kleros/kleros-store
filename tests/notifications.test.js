@@ -1,14 +1,15 @@
-const app = require('../app')
-const request = require('supertest')
+import app from '../src/app'
+import request from 'supertest'
+import seed from '../src/seed'
 
 describe('Notifications', () => {
+  beforeAll(async () => {
+    await seed()
+  })
+
   test('adds notification to profile', async () => {
-    const testAddress = "0x0"
+    const testAddress = "profile1"
     const testTxHash = "0x1"
-    // add new profile
-    let response = await request(app).post(`/${testAddress}`)
-    expect(response.statusCode).toBe(201)
-    expect(response.body.address).toBe(testAddress)
 
     const testNotification = {
       notificationType: 1,
@@ -19,7 +20,7 @@ describe('Notifications', () => {
       }
     }
 
-    response = await request(app)
+    let response = await request(app)
       .post(`/${testAddress}/notifications/${testTxHash}`)
       .send(testNotification)
 

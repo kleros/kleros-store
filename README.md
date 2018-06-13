@@ -3,13 +3,16 @@
 ## Table of Contents
 
 * [Getting started](#getting-started)
-  * [Install dependancies](#install-dependancies)
-  * [Run tests](#run-tests)
-  * [Database](#database)
+  * [Usage](#usage)
+    * [Auth](#auth)
+  * [Development](#development)
+    * [Install dependancies](#install-dependancies)
+    * [Run tests](#run-tests)
+    * [Database](#database)
       * [Set mongo network](#set-mongo-network)
       * [Run mongo in local](#run-mongo-in-local)
-  * [Set environment variables](#set-environment-variables)
-  * [Add profile](#add-profile)
+    * [Set environment variables](#set-environment-variables)
+    * [Add profile](#add-profile)
 * [Deployment](#deployment)
   * [Redeployment](#redeployment)
 * [Set https](#set-https)
@@ -21,16 +24,46 @@
 
 ## Getting started
 
-### Install dependancies
+### Usage
 
+####
+
+#### Auth
+
+In order to use POST or PUT http verb a user must:
+- Be interacting with their own user profile.
+- Include an `Authorization` header with a token that is signed using the same private key associated with the address.
+
+In order to get a token to sign call the auth endpoint:
+```
+curl -X GET https://kleros.in/<ADDRESS>/authToken
+```
+
+This will return a hex string that you should sign with your cryptographic keys. Each token includes a timestamp that tells the server when the token will expire. Once signed by the user this key can be used to make requests for the users profile until the token expires or a new token is requested by the user.
+
+E.g.
+updating a user profile with the signed token:
+```
+curl -X POST -H "Accept: application/json" -H "Authorization: <SIGNED_TOKEN>" -d "<JSON>" https://kleros.in/<ADDRESS>
+```
+
+### Development
+
+#### Quickstart
+
+- Install dependancies:
 ```
 yarn
 ```
 
-Run with
-
+- Start Mongo:
 ```
-yarn start
+sudo mongod
+```
+
+- Run in developemnt:
+```
+yarn start:dev
 ```
 
 GOTO http://localhost:3000.
@@ -123,12 +156,9 @@ apt install cmdtest
 npm install pm2 -g
 ```
 
-### Configuration
-
-Use production configuration :
+### Build and run in production:
 ```
-mv bin/www.prod bin/www
-pm2 start bin/www # start the server
+yarn start:prod
 ```
 
 ### Redeployment

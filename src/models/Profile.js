@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 const Schema = mongoose.Schema
 
 const ProfileSchema = new Schema({
@@ -6,20 +6,13 @@ const ProfileSchema = new Schema({
     type: String,
     index: true
   },
-  session: Number,
   lastBlock: Number,
   contracts : [{
     address: String,
-    hash : String,
-    partyA : String,
-    partyB : String,
-    arbitrator: String,
-    timeout: Number,
     email: String,
     description: String,
     title: String,
-    disputeId: Number,
-    evidences: [{
+    evidence: [{
       name: String,
       description: String,
       url: String,
@@ -29,8 +22,12 @@ const ProfileSchema = new Schema({
   disputes : [{
     disputeId: Number, // joint key
     arbitratorAddress: String, // joint key
-    appealDraws: [],
-    netPNK: Number
+    updated_at: {
+      type: Date,
+      default: Date.now
+    },
+    appealDraws: [], // juror
+    blockNumber: Number
   }],
   notifications: [{
     txHash: {
@@ -59,4 +56,4 @@ const ProfileSchema = new Schema({
   usePushEach: true
 })
 
-module.exports = mongoose.model('profiles', ProfileSchema)
+export default mongoose.model('profiles', ProfileSchema)
