@@ -93,6 +93,34 @@ router.post(
 )
 
 /**
+ * @api {post} :address/lastBlock Update the session. This is used as a performance
+ * helper for kleros-api so that a user that has already looked up their disputes
+ * for a session won't have to do it again.
+ *
+ * @apiGroup Profile
+ *
+ * @apiParam {String} address Ethereum of the user.
+ * @apiParam (body) {Number} session The current session for which we have looked up disputes.
+ *
+ *
+ * @apiSuccessExample {json} Success
+ *   HTTP/1.1 200 OK
+ *   {
+ *     "_id": "59aca9607879b17103bb1b43",
+ *     "contracts": [],
+ *     "disputes": [],
+ *     "notifications": [],
+ *     "lastBlock": 0,
+ *     "__v": 0,
+ *     "created_at": "2017-09-04T01:16:16.726Z"
+ *   }
+ */
+router.post(
+  '/:address/session',
+  ProfileHandlers.updateSession
+)
+
+/**
  * @api {post} :address/notifications Add a new notification to profile
  *
  * @apiGroup Profile

@@ -7,6 +7,7 @@ const ProfileSchema = new Schema({
     index: true
   },
   lastBlock: Number,
+  session: Number,
   contracts : [{
     address: String,
     email: String,

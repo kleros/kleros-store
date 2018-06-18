@@ -56,6 +56,33 @@ export const updateLastBlock = async (req, res) => {
   return res.status(201).json(NewProfile)
 }
 
+export const updateSession = async (req, res) => {
+  const address = req.params.address
+  const currentSession = req.body.session
+
+  if (!currentSession)
+  return res.status(400).json(
+    { message: `Required params: session <int>` }
+  )
+
+  let ProfileInstance = await getProfileDb(address)
+
+  // create new user if no user profile exists
+  if (_.isNull(ProfileInstance)) {
+    ProfileInstance = new Profile(
+      {
+        address: address,
+      }
+    )
+  }
+
+  ProfileInstance.session = currentSession
+
+  const NewProfile = await saveProfileDb(ProfileInstance)
+
+  return res.status(201).json(NewProfile)
+}
+
 export const updateContractProfile = async (req, res) => {
   const address = req.params.address
   const contractAddress = req.params.contractAddress
