@@ -14,6 +14,7 @@ describe('Notifications', () => {
     const testNotification = {
       notificationType: 1,
       message: "Dispute has been ruled on",
+      logIndex: 1,
       data: {
         disputeId: 0,
         ruling: 1
@@ -40,5 +41,45 @@ describe('Notifications', () => {
       .send(testNotification)
 
     expect(response.statusCode).toBe(304)
+  })
+
+  test('mark notification as read', async () => {
+    const testAddress = "profile1"
+    const testTxHash = "0x2"
+
+    const testNotification = {
+      notificationType: 1,
+      message: "Dispute has been ruled on",
+      logIndex: 0,
+      data: {
+        disputeId: 0,
+        ruling: 1
+      }
+    }
+
+    let response = await request(app)
+      .post(`/${testAddress}/notifications/${testTxHash}`)
+      .send(testNotification)
+
+    expect(response.statusCode).toBe(201)
+    expect(response.body.notifications.read).toBeFalsy()
+
+    const body = {
+      logIndex: 0,
+      isRead: true
+    }
+    // try it again. should receive 304
+    response = await request(app)
+      .post(`/${testAddress}/notifications/${testTxHash}/read`)
+      .send(body)
+
+    expect(response.statusCode).toBe(201)
+    const indexContract = response.body.notifications.findIndex(
+      notification => {
+        return (notification.txHash === testTxHash && notification.logIndex === testNotification.logIndex)
+      }
+    )
+    const notification = response.body.notifications[indexContract]
+    expect(notification.read).toBeTruthy()
   })
 })
