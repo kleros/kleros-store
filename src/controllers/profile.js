@@ -338,6 +338,34 @@ export const addNotification = async (req, res) => {
   }
 }
 
+export const markNotificationAsRead = async (req, res) => {
+  const address = req.params.address
+  const txHash = req.params.txHash
+  const logIndex = req.body.logIndex
+  const isRead = req.body.isRead
+
+  const ProfileInstance = await getProfileDb(address)
+  if (_.isNull(ProfileInstance))
+    return res.status(400).json({message: `Profile ${address} does not exist`})
+
+  const indexContract = ProfileInstance.notifications.findIndex(
+    notification => {
+      return (notification.txHash === txHash && notification.logIndex === logIndex)
+    }
+  )
+
+  if (indexContract === -1)
+    return res.status(400).json({
+      message: `Notification with txHash: ${txHash} and log index: ${logIndex} does not exist.`
+    })
+
+  ProfileInstance.notifications[indexContract].read = isRead
+  ProfileInstance.markModified('notifications')
+
+  const updatedProfile = await saveProfileDb(ProfileInstance)
+  return res.status(201).json(updatedProfile)
+}
+
 export const getProfileDb = address => {
   return new Promise((resolve, reject) => {
     Profile
