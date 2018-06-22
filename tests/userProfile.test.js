@@ -6,7 +6,7 @@ describe('User Profile', () => {
   beforeAll(async () => {
     await seed()
   })
-  
+
   test('creates a new user profile', async () => {
     const testAddress = "0x0"
 
@@ -61,8 +61,32 @@ describe('User Profile', () => {
     expect(response.body.lastBlock).toEqual(newBody.lastBlock)
   })
 
-  test('get profile by address', async () => {
+  test('update session', async () => {
     const testAddress = "0x3"
+
+    let response = await request(app)
+      .post(`/${testAddress}`)
+      .send()
+
+    expect(response.statusCode).toBe(201)
+    expect(response.body.address).toEqual(testAddress)
+
+    // try it again with different params. Should fail
+    const newBody = {
+      session: 34,
+    }
+
+    response = await request(app)
+      .post(`/${testAddress}/session`)
+      .send(newBody)
+
+    expect(response.statusCode).toBe(201)
+    expect(response.body.address).toEqual(testAddress)
+    expect(response.body.session).toEqual(newBody.session)
+  })
+
+  test('get profile by address', async () => {
+    const testAddress = "0x4"
 
     let response = await request(app)
       .post(`/${testAddress}`)

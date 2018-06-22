@@ -56,6 +56,33 @@ export const updateLastBlock = async (req, res) => {
   return res.status(201).json(NewProfile)
 }
 
+export const updateSession = async (req, res) => {
+  const address = req.params.address
+  const currentSession = req.body.session
+
+  if (!currentSession)
+  return res.status(400).json(
+    { message: `Required params: session <int>` }
+  )
+
+  let ProfileInstance = await getProfileDb(address)
+
+  // create new user if no user profile exists
+  if (_.isNull(ProfileInstance)) {
+    ProfileInstance = new Profile(
+      {
+        address: address,
+      }
+    )
+  }
+
+  ProfileInstance.session = currentSession
+
+  const NewProfile = await saveProfileDb(ProfileInstance)
+
+  return res.status(201).json(NewProfile)
+}
+
 export const updateContractProfile = async (req, res) => {
   const address = req.params.address
   const contractAddress = req.params.contractAddress
@@ -309,6 +336,34 @@ export const addNotification = async (req, res) => {
   } else {
     return res.status(304).json(ProfileInstance)
   }
+}
+
+export const markNotificationAsRead = async (req, res) => {
+  const address = req.params.address
+  const txHash = req.params.txHash
+  const logIndex = req.body.logIndex
+  const isRead = req.body.isRead
+
+  const ProfileInstance = await getProfileDb(address)
+  if (_.isNull(ProfileInstance))
+    return res.status(400).json({message: `Profile ${address} does not exist`})
+
+  const indexContract = ProfileInstance.notifications.findIndex(
+    notification => {
+      return (notification.txHash === txHash && notification.logIndex === logIndex)
+    }
+  )
+
+  if (indexContract === -1)
+    return res.status(400).json({
+      message: `Notification with txHash: ${txHash} and log index: ${logIndex} does not exist.`
+    })
+
+  ProfileInstance.notifications[indexContract].read = isRead
+  ProfileInstance.markModified('notifications')
+
+  const updatedProfile = await saveProfileDb(ProfileInstance)
+  return res.status(201).json(updatedProfile)
 }
 
 export const getProfileDb = address => {
