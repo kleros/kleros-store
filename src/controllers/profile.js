@@ -242,7 +242,6 @@ export const addNewDrawsDisputeProfile = async (req, res) => {
   const arbitratorAddress = req.params.arbitratorAddress
 
   const ProfileInstance = await getProfileDb(address)
-
   const indexDispute = _.findIndex(ProfileInstance.disputes, dispute =>
     (dispute.disputeId === disputeId && dispute.arbitratorAddress === arbitratorAddress)
   )
@@ -259,13 +258,12 @@ export const addNewDrawsDisputeProfile = async (req, res) => {
     })
 
   // draws already exist for appeal
-  if (ProfileInstance.disputes[disputeId].appealDraws[req.body.appeal] !== undefined)
+  if (ProfileInstance.disputes[indexDispute].appealDraws[req.body.appeal] !== undefined)
     return res.status(403).json({
       message: "Draws already stored for appeal"
     })
-
   // update user profile
-  ProfileInstance.disputes[disputeId].appealDraws[req.body.appeal] = req.body.draws
+  ProfileInstance.disputes[indexDispute].appealDraws[req.body.appeal] = req.body.draws
   ProfileInstance.markModified('disputes')
 
   const NewProfile = await saveProfileDb(ProfileInstance)
