@@ -196,6 +196,57 @@ router.post(
 )
 
 /**
+ * @api {get} :address/contracts/:contractAddress/meta-evidence Get the meta evidence for a contract
+ *
+ * @apiGroup Profile
+ *
+ * @apiParam {String} address Ethereum address of the user
+ * @apiParam {String} address Ethereum address of the contract
+ *
+ *
+ * @apiSuccessExample {json} Success
+ *   HTTP/1.1 200 OK
+ *   {
+ *     "_id": "59aca9607879b17103bb1b43",
+ *     "contracts": [],
+ *     "disputes": [],
+ *     "notifications": [],
+ *     "__v": 0,
+ *     "created_at": "2017-09-04T01:16:16.726Z"
+ *   }
+ */
+router.get(
+  '/:address/contracts/:contractAddress/meta-evidence',
+  ProfileHandlers.getMetaEvidence
+)
+
+/**
+ * @api {post} :address/contracts/:contractAddress/evidence/:evidenceIndex Get evidence by index
+ *
+ * @apiGroup Profile
+ *
+ * @apiParam {String} address Ethereum address of the user
+ * @apiParam {String} contractAddress Ethereum address of the contract
+ * @apiParam {String} evidenceIndex Index of the evidence
+ *
+ *
+ * @apiSuccessExample {json} Success
+ *   HTTP/1.1 200 OK
+ *   {
+ *     "_id": "59aca9607879b17103bb1b43",
+ *     "contracts": [],
+ *     "disputes": [],
+ *     "notifications": [],
+ *     "__v": 0,
+ *     "created_at": "2017-09-04T01:16:16.726Z"
+ *   }
+ */
+router.get(
+  '/:address/contracts/:contractAddress/evidence/:evidenceIndex',
+  ProfileHandlers.getEvidenceByIndex
+)
+
+/**
  * @api {post} :address/contracts/:contractAddress/evidence Add an evidence in the contract
  *
  * @apiGroup Profile
