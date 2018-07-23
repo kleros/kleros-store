@@ -8,7 +8,14 @@ describe('Notifications', () => {
   })
 
   test('adds notification to profile', async () => {
-    const testAddress = "profile1"
+    const testAddress = '0x0' + Math.random()
+
+    let response = await request(app)
+      .post(`/${testAddress}`)
+      .send()
+
+    expect(response.statusCode).toBe(201)
+
     const testTxHash = "0x1"
 
     const testNotification = {
@@ -21,7 +28,7 @@ describe('Notifications', () => {
       }
     }
 
-    let response = await request(app)
+    response = await request(app)
       .post(`/${testAddress}/notifications/${testTxHash}`)
       .send(testNotification)
 
