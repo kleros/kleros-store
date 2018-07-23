@@ -11,14 +11,26 @@ const ProfileSchema = new Schema({
   contracts : [{
     address: String,
     email: String,
-    description: String,
-    title: String,
     evidence: [{
       name: String,
       description: String,
-      url: String,
-      submittedAt: Number
-    }]
+      URI: String,
+      fileHash: String
+    }],
+    metaEvidence: {
+      fileURI: String,
+      fileHash: String,
+    	category: String,
+      title: String,
+      description: String,
+      aliases: {},
+      question: String,
+    	rulingOptions: {
+    		titles: [],
+    		descriptions: []
+    	},
+    	evidenceDisplayInterfaceURI: String
+    }
   }],
   disputes : [{
     disputeId: Number, // joint key

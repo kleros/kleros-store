@@ -19,8 +19,10 @@ describe('Contracts', () => {
       partyA: testAddressPartyA,
       partyB: testAddressPartyB,
       email: 'test@email.com',
-      description: 'test description',
-      title: 'test title'
+      metaEvidence: {
+        description: 'test description',
+        title: 'test title'
+      }
     }
 
     // create user profile
@@ -34,14 +36,14 @@ describe('Contracts', () => {
     expect(partyAProfile.address).toEqual(testAddressPartyA)
     expect(partyAProfile.contracts.length).toEqual(1)
     expect(partyAProfile.contracts[0].email).toEqual(contractBody.email)
-    expect(partyAProfile.contracts[0].description).toEqual(contractBody.description)
-    expect(partyAProfile.contracts[0].title).toEqual(contractBody.title)
+    expect(partyAProfile.contracts[0].metaEvidence.description).toEqual(contractBody.metaEvidence.description)
+    expect(partyAProfile.contracts[0].metaEvidence.title).toEqual(contractBody.metaEvidence.title)
     const partyBProfile = response.body[1]
     expect(partyBProfile.address).toEqual(testAddressPartyB)
     expect(partyBProfile.contracts.length).toEqual(1)
     expect(partyBProfile.contracts[0].email).toEqual(contractBody.email)
-    expect(partyBProfile.contracts[0].description).toEqual(contractBody.description)
-    expect(partyBProfile.contracts[0].title).toEqual(contractBody.title)
+    expect(partyBProfile.contracts[0].metaEvidence.description).toEqual(contractBody.metaEvidence.description)
+    expect(partyBProfile.contracts[0].metaEvidence.title).toEqual(contractBody.metaEvidence.title)
   }),
   test('cannot overwrite contract data', async () => {
     // use a new address for each user profile
@@ -52,8 +54,10 @@ describe('Contracts', () => {
     const contractBody = {
       partyA: testAddressPartyA,
       partyB: testAddressPartyB,
-      description: 'test description',
-      title: 'test title'
+      metaEvidence: {
+        description: 'test description',
+        title: 'test title'
+      }
     }
 
     // create user profile
@@ -81,14 +85,14 @@ describe('Contracts', () => {
     expect(partyAProfile.address).toEqual(testAddressPartyA)
     expect(partyAProfile.contracts.length).toEqual(1)
     expect(partyAProfile.contracts[0].email).toEqual(updatedContractData.email)
-    expect(partyAProfile.contracts[0].description).toEqual(contractBody.description)
-    expect(partyAProfile.contracts[0].title).toEqual(contractBody.title)
+    expect(partyAProfile.contracts[0].metaEvidence.description).toEqual(contractBody.metaEvidence.description)
+    expect(partyAProfile.contracts[0].metaEvidence.title).toEqual(contractBody.metaEvidence.title)
     const partyBProfile = response.body[1]
     expect(partyBProfile.address).toEqual(testAddressPartyB)
     expect(partyBProfile.contracts.length).toEqual(1)
     expect(partyBProfile.contracts[0].email).toEqual(updatedContractData.email)
-    expect(partyBProfile.contracts[0].description).toEqual(contractBody.description)
-    expect(partyBProfile.contracts[0].title).toEqual(contractBody.title)
+    expect(partyBProfile.contracts[0].metaEvidence.description).toEqual(contractBody.metaEvidence.description)
+    expect(partyBProfile.contracts[0].metaEvidence.title).toEqual(contractBody.metaEvidence.title)
   }),
   test('new contract no partyA or partyB', async () => {
     // use a new address for each user profile
@@ -146,6 +150,34 @@ describe('Contracts', () => {
 
     expect(response.statusCode).toBe(403)
   }),
+  test('get metaEvidence from contract', async () => {
+    // use a new address for each user profile
+    const testAddressPartyA = '0x0' + Math.random()
+    const testAddressPartyB = '0x0' + Math.random()
+
+    const contractAddress = '0x0'
+    const contractBody = {
+      partyA: testAddressPartyA,
+      partyB: testAddressPartyB,
+      email: 'test@email.com',
+      metaEvidence: {
+        description: 'test description',
+        title: 'test title'
+      }
+    }
+
+    // create user profile
+    let response = await request(app)
+      .post(`/${testAddressPartyA}/contracts/${contractAddress}`)
+      .send(contractBody)
+
+    expect(response.statusCode).toBe(201)
+
+    response = await request(app).get(`/${testAddressPartyA}/contracts/${contractAddress}/meta-evidence`)
+    expect(response.statusCode).toBe(200)
+    expect(response.body.description).toEqual(contractBody.metaEvidence.description)
+    expect(response.body.title).toEqual(contractBody.metaEvidence.title)
+  }),
   test('add evidence to contract', async () => {
     // use a new address for each user profile
     const testAddressPartyA = '0x0' + Math.random()
@@ -155,9 +187,7 @@ describe('Contracts', () => {
     let contractBody = {
       partyA: testAddressPartyA,
       partyB: testAddressPartyB,
-      email: 'test@email.com',
-      description: 'test description',
-      title: 'test title'
+      email: 'test@email.com'
     }
 
     // create user profile
@@ -170,8 +200,8 @@ describe('Contracts', () => {
     const evidenceParams = {
       name: 'testEvidence',
       description: 'test description',
-      url: 'https://kleros.io',
-      submittedAt: 0
+      URI: 'https://kleros.io',
+      fileHash: '0x0'
     }
 
     response = await request(app)
@@ -179,13 +209,16 @@ describe('Contracts', () => {
       .send(evidenceParams)
 
     expect(response.statusCode).toBe(201)
-    expect(response.body.address).toEqual(testAddressPartyB)
-    expect(response.body.contracts.length).toEqual(1)
-    expect(response.body.contracts[0].evidence.length).toEqual(1)
-    expect(response.body.contracts[0].evidence[0].name).toEqual(evidenceParams.name)
-    expect(response.body.contracts[0].evidence[0].description).toEqual(evidenceParams.description)
-    expect(response.body.contracts[0].evidence[0].url).toEqual(evidenceParams.url)
-    expect(response.body.contracts[0].evidence[0].submittedAt).toEqual(evidenceParams.submittedAt)
+    // should return evidenceIndex
+    expect(response.body.evidenceIndex).toEqual(0)
+
+    // fetch evidence by evidenceIndex
+    response = await request(app).get(`/${testAddressPartyB}/contracts/${contractAddress}/evidence/0`)
+    expect(response.body).toBeTruthy()
+    expect(response.body.name).toEqual(evidenceParams.name)
+    expect(response.body.description).toEqual(evidenceParams.description)
+    expect(response.body.URI).toEqual(evidenceParams.URI)
+    expect(response.body.fileHash).toEqual(evidenceParams.fileHash)
   }),
   test('add evidence no user profile', async () => {
     // use a new address for each user profile
@@ -197,7 +230,6 @@ describe('Contracts', () => {
       name: 'testEvidence',
       description: 'test description',
       url: 'https://kleros.io',
-      submittedAt: 0
     }
 
     const response = await request(app)
