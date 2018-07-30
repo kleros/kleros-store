@@ -11,8 +11,11 @@ import config from '../config'
 
 mongoose.Promise = require('bluebird')
 
-mongoose.connect(config.database, { useMongoClient: true })
-  .then(() => console.log('Connected to UV database'))
+mongoose.connect(config.database, {
+  useMongoClient: true,
+  reconnectTries: Number.MAX_VALUE,
+  reconnectInterval: 1000
+}).then(() => console.log('Connected to UV database'))
   .catch(err => console.error(err))
 
 // Populate DB with sample data
