@@ -10,6 +10,7 @@ const ProfileSchema = new Schema({
   session: Number,
   contracts : [{
     address: String,
+    transactionId: Number,
     email: String,
     evidence: [{
       name: String,
