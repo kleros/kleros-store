@@ -63,7 +63,7 @@ sudo mongod
 
 - Run in developemnt:
 ```
-yarn start:dev
+yarn dev
 ```
 
 GOTO http://localhost:3000.
