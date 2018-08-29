@@ -16,7 +16,7 @@ describe('Contracts', () => {
 
     const contractAddress = '0x0'
     const contractBody = {
-      transactionId: 0,
+      arbitrableTransactionId: 0,
       partyA: testAddressPartyA,
       partyB: testAddressPartyB,
       email: 'test@email.com',
@@ -36,14 +36,14 @@ describe('Contracts', () => {
     const partyAProfile = response.body[0]
     expect(partyAProfile.address).toEqual(testAddressPartyA)
     expect(partyAProfile.contracts.length).toEqual(1)
-    expect(partyAProfile.contracts[0].transactionId).toEqual(contractBody.transactionId)
+    expect(partyAProfile.contracts[0].arbitrableTransactionId).toEqual(contractBody.arbitrableTransactionId)
     expect(partyAProfile.contracts[0].email).toEqual(contractBody.email)
     expect(partyAProfile.contracts[0].metaEvidence.description).toEqual(contractBody.metaEvidence.description)
     expect(partyAProfile.contracts[0].metaEvidence.title).toEqual(contractBody.metaEvidence.title)
     const partyBProfile = response.body[1]
     expect(partyBProfile.address).toEqual(testAddressPartyB)
     expect(partyBProfile.contracts.length).toEqual(1)
-    expect(partyBProfile.contracts[0].transactionId).toEqual(contractBody.transactionId)
+    expect(partyBProfile.contracts[0].arbitrableTransactionId).toEqual(contractBody.arbitrableTransactionId)
     expect(partyBProfile.contracts[0].email).toEqual(contractBody.email)
     expect(partyBProfile.contracts[0].metaEvidence.description).toEqual(contractBody.metaEvidence.description)
     expect(partyBProfile.contracts[0].metaEvidence.title).toEqual(contractBody.metaEvidence.title)
@@ -55,7 +55,7 @@ describe('Contracts', () => {
 
     const contractAddress = '0x0'
     const contractBody = {
-      transactionId: 0,
+      arbitrableTransactionId: 0,
       partyA: testAddressPartyA,
       partyB: testAddressPartyB,
       metaEvidence: {
@@ -72,7 +72,7 @@ describe('Contracts', () => {
     expect(response.statusCode).toBe(201)
 
     const updatedContractData = {
-      transactionId: 0,
+      arbitrableTransactionId: 0,
       partyA: testAddressPartyA,
       partyB: testAddressPartyB,
       email: 'new@email.com',
@@ -90,7 +90,7 @@ describe('Contracts', () => {
     expect(partyAProfile.address).toEqual(testAddressPartyA)
     expect(partyAProfile.contracts.length).toEqual(1)
     expect(partyAProfile.contracts[0].email).toEqual(updatedContractData.email)
-    expect(partyAProfile.contracts[0].transactionId).toEqual(updatedContractData.transactionId)
+    expect(partyAProfile.contracts[0].arbitrableTransactionId).toEqual(updatedContractData.arbitrableTransactionId)
     expect(partyAProfile.contracts[0].metaEvidence.description).toEqual(contractBody.metaEvidence.description)
     expect(partyAProfile.contracts[0].metaEvidence.title).toEqual(contractBody.metaEvidence.title)
     const partyBProfile = response.body[1]
@@ -107,7 +107,7 @@ describe('Contracts', () => {
 
     const contractAddress = '0x0'
     let contractBody = {
-      transactionId: 0,
+      arbitrableTransactionId: 0,
       partyB: testAddressPartyB,
       email: 'test@email.com',
       description: 'test description',
@@ -122,7 +122,7 @@ describe('Contracts', () => {
     expect(response.statusCode).toBe(400)
 
     contractBody = {
-      transactionId: 0,
+      arbitrableTransactionId: 0,
       partyA: testAddressPartyA,
       email: 'test@email.com',
       description: 'test description',
@@ -144,7 +144,7 @@ describe('Contracts', () => {
 
     const contractAddress = '0x0'
     let contractBody = {
-      transactionId: 0,
+      arbitrableTransactionId: 0,
       partyA: testAddressPartyA,
       partyB: testAddressPartyB,
       email: 'test@email.com',
@@ -166,7 +166,7 @@ describe('Contracts', () => {
 
     const contractAddress = '0x0'
     const contractBody = {
-      transactionId: 0,
+      arbitrableTransactionId: 0,
       partyA: testAddressPartyA,
       partyB: testAddressPartyB,
       email: 'test@email.com',
@@ -195,7 +195,7 @@ describe('Contracts', () => {
 
     const contractAddress = '0x0'
     let contractBody = {
-      transactionId: 0,
+      arbitrableTransactionId: 0,
       partyA: testAddressPartyA,
       partyB: testAddressPartyB,
       email: 'test@email.com'
