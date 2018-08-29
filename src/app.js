@@ -15,7 +15,7 @@ mongoose.connect(config.database, {
   useMongoClient: true,
   reconnectTries: Number.MAX_VALUE,
   reconnectInterval: 1000
-}).then(() => console.log('Connected to UV database'))
+}).then(() => console.log('Connected to Kleros database'))
   .catch(err => console.error(err))
 
 // Populate DB with sample data
