@@ -35,7 +35,7 @@
     "express": "^4.16.2",
     "jade": "~1.11.0",
     "js-sha3": "^0.7.0",
-    "mongoose": "^4.11.9",
+    "mongoose": "^5.7.5",
     "mongoose-seed": "^0.4.1",
     "morgan": "^1.9.0",
     "pug": "^2.0.0-beta11",
